@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+@layer utilities {
+    .animate-in {
+        animation-duration: 1.5s;
+        /* Default duration */
+        animation-fill-mode: both;
+        opacity: 0;
+    }
+
+    .slide-in-from-bottom {
+        animation-name: slideInUp;
+    }
+
+    .slide-in-from-top {
+        animation-name: slideInDown;
+    }
+
+    .slide-in-from-left {
+        animation-name: slideInLeft;
+    }
+
+    .slide-in-from-right {
+        animation-name: slideInRight;
+    }
+
+    .fade-in {
+        animation-name: fadeIn;
+    }
+
+    .bounce-in-up {
+        animation-name: bounceInUp;
+    }
+
+    .delay-100 {
+        animation-delay: 100ms;
+    }
+
+    .delay-200 {
+        animation-delay: 200ms;
+    }
+
+    .delay-300 {
+        animation-delay: 300ms;
+    }
+
+    .delay-500 {
+        animation-delay: 500ms;
+    }
+
+    /* Keyframes */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 50px, 0);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translate3d(0, -50px, 0);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translate3d(-50px, 0, 0);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translate3d(50px, 0, 0);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes bounceInUp {
+
+        from,
+        60%,
+        75%,
+        90%,
+        to {
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        from {
+            opacity: 0;
+            transform: translate3d(0, 3000px, 0) scaleY(5);
+        }
+
+        60% {
+            opacity: 1;
+            transform: translate3d(0, -20px, 0) scaleY(0.9);
+        }
+
+        75% {
+            transform: translate3d(0, 10px, 0) scaleY(0.95);
+        }
+
+        90% {
+            transform: translate3d(0, -5px, 0) scaleY(0.985);
+        }
+
+        to {
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+        }
+    }
+
+}
