@@ -9,6 +9,7 @@ import Wishlist from './pages/Wishlist';
 import Blog from './pages/Blog';
 import ScrollToTop from './utils/ScrollToTop';
 import CustomPhotoFrame from './pages/CustomPhotoFrame';
+import Terms from './pages/Terms';
 import FloatingActions from './components/FloatingActions/FloatingActions';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                         <Route path="/wishlist" element={<Wishlist />} />
                         <Route path="/blog" element={<Blog />} />
                         <Route path="/custom-frame" element={<CustomPhotoFrame />} />
+                        <Route path="/terms" element={<Terms />} />
                     </Routes>
                 </main>
                 <Footer />

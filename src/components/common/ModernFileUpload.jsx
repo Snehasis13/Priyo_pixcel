@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
     Upload,
     X,
-    File,
+    File as FileIcon,
     Image as ImageIcon,
     AlertCircle,
     CheckCircle2
@@ -130,6 +130,7 @@ const ModernFileUpload = ({
                 {uploadedFile ? (
                     // Uploaded State
                     <motion.div
+                        key="uploaded"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95 }}
@@ -147,7 +148,7 @@ const ModernFileUpload = ({
                         ) : (
                             <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
                                 <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-                                    <File size={24} />
+                                    <FileIcon size={24} />
                                 </div>
                                 <div className="flex-1">
                                     <p className="font-medium text-gray-900 truncate max-w-[200px] sm:max-w-xs">
@@ -181,6 +182,7 @@ const ModernFileUpload = ({
                 ) : (
                     // Empty / Drag State
                     <motion.div
+                        key="empty"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
