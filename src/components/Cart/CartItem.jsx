@@ -32,14 +32,14 @@ const CartItem = ({
             animate="visible"
             exit="exit"
             transition={{ duration: 0.3 }}
-            className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mb-4 hover:shadow-lg transition-shadow"
+            className="group bg-white rounded-xl border border-gray-200 p-4 sm:p-6 mb-4 hover:shadow-lg transition-shadow"
         >
             <div className="md:grid md:grid-cols-12 md:gap-4 md:items-center">
 
                 {/* Product Section (Col Span 6) */}
                 <div className="md:col-span-6 flex gap-4 sm:gap-6">
                     {/* Image */}
-                    <div className="w-24 h-24 sm:w-24 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700 bg-gray-50">
+                    <div className="w-24 h-24 sm:w-24 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
                         <Image
                             src={item.image}
                             alt={item.name}
@@ -51,7 +51,7 @@ const CartItem = ({
                     <div className="flex-1 min-w-0 flex flex-col justify-between md:justify-center">
                         <div>
                             <div className="flex justify-between md:block items-start">
-                                <h3 className="font-bold text-gray-900 dark:text-white mb-1 truncate text-lg pr-4">
+                                <h3 className="font-bold text-gray-900 mb-1 truncate text-lg pr-4">
                                     {item.name}
                                 </h3>
                                 {/* Mobile Only Price Ticker */}
@@ -60,7 +60,7 @@ const CartItem = ({
                                 </div>
                             </div>
                             {item.variant && (
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{item.variant}</p>
+                                <p className="text-sm text-gray-500 mt-1">{item.variant}</p>
                             )}
                             {/* Mobile Only Unit Price */}
                             <p className="text-xs text-gray-400 mt-1 md:hidden">
