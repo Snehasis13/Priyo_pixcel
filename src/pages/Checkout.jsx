@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import { ArrowLeft, ShieldCheck, Lock } from 'lucide-react';
 import Reveal from '../components/Reveal/Reveal';
 
@@ -8,6 +9,8 @@ const Checkout = () => {
     const navigate = useNavigate();
     const { items, total, csrfToken } = location.state || {};
     const [isValidSession, setIsValidSession] = useState(true);
+    const { addOrder } = useCart();
+    const [isProcessing, setIsProcessing] = useState(false);
 
     useEffect(() => {
         // Mock Session Validation
@@ -19,6 +22,23 @@ const Checkout = () => {
             return () => clearTimeout(timer);
         }
     }, [location.state, csrfToken, navigate]);
+
+    const handlePlaceOrder = async () => {
+        setIsProcessing(true);
+
+        // Simulate processing delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        const order = {
+            items: items,
+            total: total,
+            paymentMethod: 'Demo Payment'
+        };
+
+        addOrder(order);
+        setIsProcessing(false);
+        navigate('/dashboard'); // Go to dashboard to see new order count
+    };
 
     if (!isValidSession) {
         return (
@@ -76,9 +96,17 @@ const Checkout = () => {
                         <span className="text-2xl font-bold text-[#EA7704]">₹{total?.toLocaleString()}</span>
                     </div>
 
-                    <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-sm text-blue-700 dark:text-blue-300">
+                    <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-sm text-blue-700 dark:text-blue-300 mb-6">
                         <p><strong>Note:</strong> This is a demo checkout page. No real payment processing will occur.</p>
                     </div>
+
+                    <button
+                        onClick={handlePlaceOrder}
+                        disabled={isProcessing}
+                        className="w-full flex justify-center py-4 px-6 border border-transparent text-lg font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-75 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all"
+                    >
+                        {isProcessing ? "Processing Order..." : `Pay ₹${total?.toLocaleString()}`}
+                    </button>
                 </div>
             </div>
         </div>

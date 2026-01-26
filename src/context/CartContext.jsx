@@ -28,6 +28,11 @@ export const CartProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : [];
     });
 
+    const [orders, setOrders] = useState(() => {
+        const savedOrders = localStorage.getItem('orders');
+        return savedOrders ? JSON.parse(savedOrders) : [];
+    });
+
     // Security State
     const [lastActivity, setLastActivity] = useState(Date.now());
     const [showSessionWarning, setShowSessionWarning] = useState(false);
@@ -59,6 +64,10 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('savedItems', JSON.stringify(savedItems));
         localStorage.setItem('wishlistItems', JSON.stringify(savedItems)); // Keep new key sync
     }, [savedItems]);
+
+    useEffect(() => {
+        localStorage.setItem('orders', JSON.stringify(orders));
+    }, [orders]);
 
     // Session Management Effect
     useEffect(() => {
@@ -312,6 +321,19 @@ export const CartProvider = ({ children }) => {
         return acc;
     }, 0);
 
+    const addOrder = (orderData) => {
+        const newOrder = {
+            id: crypto.randomUUID(),
+            date: new Date().toISOString(),
+            status: 'Processing',
+            ...orderData
+        };
+        setOrders(prev => [newOrder, ...prev]);
+        clearCart(); // Clear cart after order
+        addToast("Order placed successfully!", { type: 'success' });
+        return newOrder;
+    };
+
     return (
         <CartContext.Provider value={{
             cartItems,
@@ -337,7 +359,9 @@ export const CartProvider = ({ children }) => {
             extendSession, // Security
             SESSION_TIMEOUT,
             lastActivity,
-            isLoading
+            isLoading,
+            orders,
+            addOrder
         }}>
             {children}
         </CartContext.Provider>

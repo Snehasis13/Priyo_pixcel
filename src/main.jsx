@@ -6,14 +6,18 @@ import { CartProvider } from './context/CartContext.jsx'
 import { ToastProvider } from './context/ToastContext.jsx'
 import './index.css'
 
+import ErrorBoundary from './components/common/ErrorBoundary'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <ToastProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
-      </ToastProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <ToastProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </ToastProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   </StrictMode>,
 )
