@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -16,12 +17,12 @@ const Footer = () => {
                             { label: "Contact Us", href: "/contact" }
                         ].map((link, index, array) => (
                             <div key={index} className="flex items-center">
-                                <a
-                                    href={link.href}
+                                <Link
+                                    to={link.href}
                                     className="text-gray-400 hover:text-[#EA7704] transition-colors duration-300 text-sm sm:text-base font-medium px-4"
                                 >
                                     {link.label}
-                                </a>
+                                </Link>
                                 {index < array.length - 1 && (
                                     <span className="hidden sm:block w-px h-4 bg-gray-700"></span>
                                 )}
