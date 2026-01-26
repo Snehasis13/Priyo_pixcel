@@ -82,10 +82,10 @@ const QuantitySelector = ({
     };
 
     return (
-        <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-full px-1 py-1 shadow-inner relative group">
+        <div className="flex items-center bg-gray-100 rounded-full px-1 py-1 shadow-inner relative group">
             <button
                 onClick={handleDecrease}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-white dark:bg-gray-600 text-gray-600 dark:text-gray-300 shadow-sm hover:text-[#EA7704] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-gray-600 shadow-sm hover:text-[#EA7704] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
                 disabled={localQuantity <= min || isUpdating}
                 aria-label="Decrease quantity"
             >
@@ -103,7 +103,7 @@ const QuantitySelector = ({
                         value={localQuantity}
                         onChange={handleInputChange}
                         onBlur={handleBlur}
-                        className="w-full text-center bg-transparent font-bold text-gray-900 dark:text-white border-none focus:ring-0 p-0 text-sm"
+                        className="w-full text-center bg-transparent font-bold text-gray-900 border-none focus:ring-0 p-0 text-sm"
                         aria-label="Quantity input"
                     />
                 )}
@@ -111,7 +111,7 @@ const QuantitySelector = ({
 
             <button
                 onClick={handleIncrease}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-white dark:bg-gray-600 text-gray-600 dark:text-gray-300 shadow-sm hover:text-[#EA7704] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-gray-600 shadow-sm hover:text-[#EA7704] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
                 disabled={localQuantity >= max || isUpdating}
                 aria-label="Increase quantity"
             >
