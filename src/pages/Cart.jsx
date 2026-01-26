@@ -112,12 +112,12 @@ const Cart = () => {
 
     if (!cartItems || cartItems.length === 0) {
         return (
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32 pb-20 px-4 flex flex-col items-center justify-center text-center">
+            <div className="min-h-screen bg-gray-50 pt-32 pb-20 px-4 flex flex-col items-center justify-center text-center">
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                    className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6 mx-auto"
+                    className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6 mx-auto"
                 >
                     <motion.div
                         animate={{ y: [0, -10, 0] }}
@@ -127,7 +127,7 @@ const Cart = () => {
                     </motion.div>
                 </motion.div>
                 <Reveal animation="fadeInUp">
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Your Cart is Empty</h2>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-4">Your Cart is Empty</h2>
                     <p className="text-gray-500 max-w-md mx-auto mb-8">
                         Looks like you haven't added anything to your cart yet.
                     </p>
@@ -145,12 +145,12 @@ const Cart = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gray-50 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <Reveal animation="fadeInDown">
-                    <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-10 tracking-tight">
+                    <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-10 tracking-tight">
                         Shopping <span className="text-[#EA7704]">Cart</span>
-                        <span className="ml-4 text-lg font-medium text-gray-500 dark:text-gray-400">
+                        <span className="ml-4 text-lg font-medium text-gray-500">
                             ({cartItems.length} items)
                         </span>
                     </h1>
@@ -159,16 +159,16 @@ const Cart = () => {
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Cart Items Table */}
                     <div className="flex-grow">
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
                             {/* Table Headers */}
-                            <div className="hidden md:grid grid-cols-12 gap-4 p-6 bg-gray-50 dark:bg-gray-900/50 text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                            <div className="hidden md:grid grid-cols-12 gap-4 p-6 bg-gray-50 text-sm font-semibold text-gray-600 uppercase tracking-wider">
                                 <div className="col-span-6">Items</div>
                                 <div className="col-span-3 text-center">Quantity</div>
                                 <div className="col-span-3 text-right">Amount</div>
                             </div>
 
                             {/* Cart Items */}
-                            <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                            <div className="divide-y divide-gray-100">
                                 <AnimatePresence mode="popLayout" initial={false}>
                                     {cartItems.map((item) => (
                                         <CartItem
@@ -197,30 +197,30 @@ const Cart = () => {
                     {/* Order Summary */}
                     <div className="lg:w-96 flex-shrink-0">
                         <Reveal animation="slideInRight">
-                            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sm:p-8 sticky top-24 border border-gray-100 dark:border-gray-700">
-                                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+                            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 sticky top-24 border border-gray-100">
+                                <h2 className="text-xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-200">
                                     Order Summary
                                 </h2>
 
                                 <div className="space-y-4 mb-6">
-                                    <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                                    <div className="flex justify-between text-gray-600">
                                         <span>Subtotal</span>
-                                        <span className="font-semibold text-gray-900 dark:text-white">₹{subtotal.toLocaleString()}</span>
+                                        <span className="font-semibold text-gray-900">₹{subtotal.toLocaleString()}</span>
                                     </div>
-                                    <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                                    <div className="flex justify-between text-gray-600">
                                         <span>Shipping Estimate</span>
-                                        <span className={`font-semibold ${shipping === 0 ? 'text-green-500' : 'text-gray-900 dark:text-white'}`}>
+                                        <span className={`font-semibold ${shipping === 0 ? 'text-green-500' : 'text-gray-900'}`}>
                                             {shipping === 0 ? 'Free' : `₹${shipping}`}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between text-gray-600 dark:text-gray-400 text-sm">
+                                    <div className="flex justify-between text-gray-600 text-sm">
                                         <span>Tax Estimate (18%)</span>
-                                        <span className="font-semibold text-gray-900 dark:text-white">Included</span>
+                                        <span className="font-semibold text-gray-900">Included</span>
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-center py-4 border-t border-gray-200 dark:border-gray-700 mb-8">
-                                    <span className="text-lg font-bold text-gray-900 dark:text-white">Order Total</span>
+                                <div className="flex justify-between items-center py-4 border-t border-gray-200 mb-8">
+                                    <span className="text-lg font-bold text-gray-900">Order Total</span>
                                     <PriceTicker price={total} className="text-2xl font-bold text-[#EA7704]" />
                                 </div>
 
@@ -234,7 +234,7 @@ const Cart = () => {
                                     <ArrowRight className="w-5 h-5 ml-2" />
                                 </AnimatedButton>
 
-                                <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+                                <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-gray-500">
                                     <ShoppingBag className="w-4 h-4" />
                                     <span>Secure Checkout</span>
                                 </div>
@@ -245,10 +245,10 @@ const Cart = () => {
 
                 {/* Wishlist Preview Section */}
                 {wishlistItems.length > 0 && (
-                    <div className="mt-16 border-t border-gray-200 dark:border-gray-700 pt-12">
+                    <div className="mt-16 border-t border-gray-200 pt-12">
                         <Reveal animation="fadeInUp">
                             <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                                <h2 className="text-2xl font-bold text-gray-900">
                                     Your Wishlist ({wishlistItems.length})
                                 </h2>
                                 <Link to="/wishlist" className="text-[#EA7704] font-medium hover:underline flex items-center">
@@ -259,7 +259,7 @@ const Cart = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {wishlistItems.slice(0, 3).map((item, index) => (
                                 <Reveal key={item.id} animation="fadeInUp" delay={`delay-${index * 100}`}>
-                                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                                    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                                         <div className="aspect-video w-full overflow-hidden relative group">
                                             <Image
                                                 src={item.image}
@@ -268,7 +268,7 @@ const Cart = () => {
                                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 pointer-events-none" />
                                         </div>
                                         <div className="p-4">
-                                            <h3 className="font-bold text-gray-900 dark:text-white mb-1 truncate">
+                                            <h3 className="font-bold text-gray-900 mb-1 truncate">
                                                 {item.name}
                                             </h3>
                                             <p className="text-[#EA7704] font-bold mb-4">
@@ -278,7 +278,7 @@ const Cart = () => {
                                                 <button
                                                     onClick={() => handleAction(item.id, () => moveToCart(item.id))}
                                                     disabled={processingItem === item.id}
-                                                    className={`flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-[#EA7704] hover:text-white text-gray-900 dark:text-white font-medium py-2 px-4 rounded-lg transition-all text-sm flex items-center justify-center gap-2 ${processingItem === item.id ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                                    className={`flex-1 bg-gray-100 hover:bg-[#EA7704] hover:text-white text-gray-900 font-medium py-2 px-4 rounded-lg transition-all text-sm flex items-center justify-center gap-2 ${processingItem === item.id ? 'opacity-70 cursor-not-allowed' : ''}`}
                                                 >
                                                     {processingItem === item.id ? <LoadingSpinner size="xs" /> : null}
                                                     {processingItem === item.id ? 'Moving...' : 'Move to Cart'}
@@ -286,7 +286,7 @@ const Cart = () => {
                                                 <button
                                                     onClick={() => handleAction(item.id, () => removeFromWishlist(item.id, item.name))}
                                                     disabled={processingItem === item.id}
-                                                    className={`p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors bg-transparent border border-gray-200 dark:border-gray-600 ${processingItem === item.id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                    className={`p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors bg-transparent border border-gray-200 ${processingItem === item.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                                                 >
                                                     {processingItem === item.id ? <LoadingSpinner size="xs" color="text-red-500" /> : <Trash2 className="w-5 h-5" />}
                                                 </button>

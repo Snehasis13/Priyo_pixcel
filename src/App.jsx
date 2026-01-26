@@ -10,6 +10,9 @@ import Blog from './pages/Blog';
 import ScrollToTop from './utils/ScrollToTop';
 import CustomPhotoFrame from './pages/CustomPhotoFrame';
 import Terms from './pages/Terms';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import AllProducts from './pages/AllProducts';
+import ProductDetails from './pages/ProductDetails';
 import FloatingActions from './components/FloatingActions/FloatingActions';
 
 function App() {
@@ -26,9 +29,12 @@ function App() {
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/wishlist" element={<Wishlist />} />
+                        <Route path="/products" element={<AllProducts />} />
+                        <Route path="/product/:id" element={<ProductDetails />} />
                         <Route path="/blog" element={<Blog />} />
                         <Route path="/custom-frame" element={<CustomPhotoFrame />} />
                         <Route path="/terms" element={<Terms />} />
+                        <Route path="/privacy" element={<PrivacyPolicy />} />
                     </Routes>
                 </main>
                 <Footer />

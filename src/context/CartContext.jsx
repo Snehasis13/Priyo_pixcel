@@ -109,19 +109,44 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product) => {
         refreshSession();
+        // Determine quantity to add: if product has 'quantity' prop use it, else 1
+        const quantityToAdd = product.quantity && product.quantity > 0 ? product.quantity : 1;
+
         setCartItems((prevItems) => {
-            // Check if item exists (matching ID and variant if applicable)
-            // For now, simple ID check, but prepared for variants
             const existingItemIndex = prevItems.findIndex((item) => item.id === product.id);
 
             if (existingItemIndex > -1) {
+                // CORRECT: Create a deep copy of the item to avoid mutation
                 const newItems = [...prevItems];
-                newItems[existingItemIndex].quantity += 1;
-                addToast(`Increased quantity of ${product.name}`, { type: 'success', position: 'bottom-right', duration: 2000 });
-                return newItems;
+                const updatedItem = {
+                    ...newItems[existingItemIndex],
+                    quantity: newItems[existingItemIndex].quantity + quantityToAdd
+                };
+                newItems[existingItemIndex] = updatedItem;
+                return newItems; // Return the new state
             } else {
-                addToast(`${product.name} added to cart`, { type: 'success', position: 'bottom-right' });
-                return [...prevItems, { ...product, quantity: 1 }];
+                // Ensure we sanitize the product object (don't keep 'quantity' from the payload if we want to standardize)
+                // But generally we just want { ...product, quantity: quantityToAdd }
+                return [...prevItems, { ...product, quantity: quantityToAdd }];
+            }
+        });
+
+        // Side effects outside updater
+        // We can't know for sure if it was "added" or "increased" without checking state, 
+        // but for toast purposes generic message or 'updated' is fine.
+        // Or we can check distinct state, but since setState is async, we assume success.
+        addToast(`${product.name} added to cart`, { type: 'success', position: 'bottom-right' });
+    };
+
+    const toggleWishlist = (product) => {
+        setSavedItems(prev => {
+            const exists = prev.find(i => i.id === product.id);
+            if (exists) {
+                addToast(`${product.name} removed from wishlist`, { type: 'error', position: 'bottom-right' });
+                return prev.filter(i => i.id !== product.id);
+            } else {
+                addToast(`${product.name} added to wishlist`, { type: 'success', position: 'bottom-right' });
+                return [...prev, product];
             }
         });
     };
@@ -137,7 +162,7 @@ export const CartProvider = ({ children }) => {
         if (itemToSave) {
             setSavedItems(prev => {
                 const exists = prev.find(i => i.id === id);
-                if (exists) return prev; // Prevent duplicates just in case
+                if (exists) return prev; // Prevent duplicates locally
                 return [...prev, itemToSave];
             });
             setCartItems(prev => prev.filter(item => item.id !== id));
@@ -301,6 +326,7 @@ export const CartProvider = ({ children }) => {
             clearCart,
             addToWishlist,
             removeFromWishlist,
+            toggleWishlist,
             moveAllToCart,
             wishlistItems,
             cartCount,

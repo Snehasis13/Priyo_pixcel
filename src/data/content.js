@@ -9,7 +9,7 @@ export const content = {
         logo: "Priyo Pixcel",
         nav: [
             { label: "Home", href: "/" },
-            { label: "Products", href: "/products" },
+            { label: "All Products", href: "/products" },
             { label: "Custom Frames", href: "/custom-frame" },
             { label: "Blog", href: "/blog" },
             { label: "Contact", href: "/contact" }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ShoppingBag, User, Menu, X, Phone, Mail, Instagram, Facebook, Twitter, Heart } from 'lucide-react';
+import { ShoppingBag, User, Menu, X, Phone, Mail, Instagram, Facebook, Twitter, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { content } from '../../data/content';
@@ -69,7 +69,7 @@ const Header = () => {
 
                     {/* Icons */}
                     <div className="hidden md:flex items-center space-x-6">
-                        <Search className={`w-5 h-5 cursor-pointer hover:text-purple-600 transition-colors ${isScrolled ? 'text-gray-700' : 'text-gray-800'}`} />
+
 
                         {/* Wishlist Icon */}
                         <Link to="/wishlist" className="relative group cursor-pointer">
@@ -118,7 +118,7 @@ const Header = () => {
                         </Link>
                     ))}
                     <div className="border-t border-gray-100 pt-4 mt-4 flex justify-around">
-                        <Search className="w-6 h-6 text-gray-600" />
+
 
                         <Link to="/wishlist" className="relative" onClick={() => setIsMenuOpen(false)}>
                             <Heart className="w-6 h-6 text-gray-600" />

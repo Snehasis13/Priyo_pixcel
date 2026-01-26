@@ -10,7 +10,6 @@ const Footer = () => {
                         {[
                             { label: "About Us", href: "/about" },
                             { label: "Products", href: "/products" },
-                            { label: "Shipping", href: "/shipping" },
                             { label: "Customized Products", href: "/custom-frame" },
                             { label: "Privacy Policies", href: "/privacy" },
                             { label: "Terms and Conditions", href: "/terms" },
