@@ -46,19 +46,13 @@ const ProductCustomizationForm = ({ selectedProduct, onBack, onSubmit, initialVa
     });
 
     // Set initial quantity based on product type ONLY if not editing (to preserve edit qty)
+    // Set initial quantity based on product type ONLY if not editing (to preserve edit qty)
     useEffect(() => {
         if (!isEditing) {
-            if (selectedProduct?.id === 'cards') {
-                setFormData(prev => ({
-                    ...prev,
-                    productCustomization: { ...prev.productCustomization, quantity: 50 }
-                }));
-            } else {
-                setFormData(prev => ({
-                    ...prev,
-                    productCustomization: { ...prev.productCustomization, quantity: 1 }
-                }));
-            }
+            setFormData(prev => ({
+                ...prev,
+                productCustomization: { ...prev.productCustomization, quantity: 1 }
+            }));
         }
     }, [selectedProduct?.id, isEditing]);
 

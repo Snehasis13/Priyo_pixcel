@@ -11,8 +11,10 @@ import {
     Key,
     Images,
     ArrowLeft,
-    Sparkles
+    Sparkles,
+    ShoppingBag
 } from 'lucide-react';
+import { products as allProducts } from '../data/products';
 import ProductCustomizationForm from '../components/CustomFrame/ProductCustomizationForm';
 import Reveal from '../components/Reveal/Reveal';
 
@@ -95,6 +97,32 @@ const CustomPhotoFrame = () => {
             }
         }
     }, [location.state]);
+
+    // Helper to match product from global catalog to customization category
+    const matchProductToCategory = (product) => {
+        const pName = product.name.toLowerCase();
+        const pCat = product.category;
+
+        if (pCat === 'T-Shirts') return products.find(p => p.id === 'tshirts');
+        if (pCat === 'Mugs') return products.find(p => p.id === 'mugs');
+        if (pCat === 'Business Cards') return products.find(p => p.id === 'cards');
+
+        // Specific checks
+        if (pName.includes('fan') || pCat.includes('Fan')) return products.find(p => p.id === 'fans');
+        if (pCat === 'Photo Frames' || pCat === 'LED Frames') return products.find(p => p.id === 'frames');
+        if (pCat === 'Keychains') return products.find(p => p.id === 'keychains');
+
+        return null;
+    };
+
+    const handleOtherProductSelect = (product) => {
+        const matchedCategory = matchProductToCategory(product);
+        if (matchedCategory) {
+            setSelectedProduct(matchedCategory);
+            // Optionally, we could pass some pre-fill data based on the specific product
+            // For now, we just open the correct form category
+        }
+    };
 
     // Mock price calculator
     const calculatePrice = (product, data) => {
@@ -258,6 +286,57 @@ const CustomPhotoFrame = () => {
                                     </div>
                                 </motion.div>
                             ))}
+                        </div>
+
+                        {/* "Other Products" Section */}
+                        <div className="mt-24">
+                            <div className="flex items-center justify-between mb-8">
+                                <div>
+                                    <h2 className="text-3xl font-bold text-gray-900">Explore More Products</h2>
+                                    <p className="text-gray-500 mt-2">Discover our full range of customizable items</p>
+                                </div>
+                                <div className="hidden md:block h-px flex-1 bg-gray-200 ml-8"></div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {allProducts.map((product) => {
+                                    const match = matchProductToCategory(product);
+                                    if (!match) return null; // Don't show if we can't customizer it
+
+                                    return (
+                                        <motion.div
+                                            key={product.id}
+                                            whileHover={{ y: -5 }}
+                                            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-lg transition-all cursor-pointer group"
+                                            onClick={() => handleOtherProductSelect(product)}
+                                        >
+                                            <div className="relative aspect-square rounded-xl overflow-hidden mb-4 bg-gray-100">
+                                                <img
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                />
+                                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                                    <span className="bg-white text-black px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                        <Sparkles size={14} /> Customize
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <p className="text-xs font-bold text-purple-600 mb-1 uppercase tracking-wider">{match.name}</p>
+                                                <h3 className="text-lg font-bold text-gray-900 mb-1 line-clamp-1">{product.name}</h3>
+                                                <div className="flex items-center justify-between mt-2">
+                                                    <span className="text-gray-900 font-bold">₹{product.price}</span>
+                                                    {product.originalPrice > product.price && (
+                                                        <span className="text-gray-400 text-sm line-through">₹{product.originalPrice}</span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </motion.div>
                 ) : (
