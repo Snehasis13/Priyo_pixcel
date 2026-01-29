@@ -17,18 +17,14 @@ const Home = () => {
                 <ProductGrid />
             </Reveal>
             <div className="space-y-16 mb-16">
-                <Reveal animation="slideInRight">
-                    <CategorySection title="LED Wooden Cutout Photo Frames" category="LED Frames" />
-                </Reveal>
+
                 <Reveal animation="slideInLeft">
                     <CategorySection title="Photo Frames" category="Photo Frames" />
                 </Reveal>
                 <Reveal animation="slideInRight">
                     <CategorySection title="Business Card" category="Business Cards" />
                 </Reveal>
-                <Reveal animation="slideInLeft">
-                    <CategorySection title="Customized CAFFE MUGS" category="Mugs" />
-                </Reveal>
+
                 <Reveal animation="slideInRight">
                     <CategorySection title="T-shirt" category="T-Shirts" />
                 </Reveal>

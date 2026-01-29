@@ -2,6 +2,7 @@ import React from 'react';
 import { products } from '../../data/products';
 import { content } from '../../data/content';
 import ProductCard from '../ProductCard/ProductCard';
+import { Link } from 'react-router-dom';
 
 const ProductGrid = () => {
     return (
@@ -12,13 +13,13 @@ const ProductGrid = () => {
                         <h2 className="text-3xl font-extrabold text-gray-900 mb-2">{content.productGrid.title}</h2>
                         <p className="text-gray-500">{content.productGrid.subtitle}</p>
                     </div>
-                    <a href="#" className="mt-4 md:mt-0 text-purple-600 hover:text-purple-700 font-medium flex items-center">
+                    <Link to="/products" className="mt-4 md:mt-0 text-purple-600 hover:text-purple-700 font-medium flex items-center">
                         {content.productGrid.viewAll} <span className="ml-2">→</span>
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {products.map((product) => (
+                    {products.slice(0, 6).map((product) => (
                         <div key={product.id}>
                             <ProductCard product={product} />
                         </div>

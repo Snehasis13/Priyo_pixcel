@@ -3,6 +3,7 @@ import { products } from '../data/products';
 import { Search } from 'lucide-react';
 import ProductCard from '../components/ProductCard/ProductCard';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AllProducts = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -21,13 +22,23 @@ const AllProducts = () => {
     return (
         <div className="pt-24 pb-16 min-h-screen bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center mb-12"
+                >
                     <h1 className="text-4xl font-bold text-gray-900 mb-4">All Products</h1>
                     <p className="text-lg text-gray-600">Explore our premium collection of customized gifts</p>
-                </div>
+                </motion.div>
 
                 {/* Filters and Search */}
-                <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="bg-white rounded-lg shadow-sm p-6 mb-8"
+                >
                     <div className="flex flex-col md:flex-row gap-6 justify-between items-center">
                         <div className="relative w-full md:w-96">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -65,25 +76,41 @@ const AllProducts = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Product Grid */}
                 {filteredProducts.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                        {filteredProducts.map(product => (
-                            <div key={product.id}>
-                                <ProductCard product={product} />
-                            </div>
-                        ))}
-                    </div>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                    >
+                        <AnimatePresence>
+                            {filteredProducts.map((product, index) => (
+                                <motion.div
+                                    key={product.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                >
+                                    <ProductCard product={product} />
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </motion.div>
                 ) : (
-                    <div className="text-center py-20">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center py-20"
+                    >
                         <div className="text-gray-400 mb-4">
                             <Search className="w-16 h-16 mx-auto opacity-50" />
                         </div>
                         <h3 className="text-xl font-medium text-gray-900 mb-2">No products found</h3>
                         <p className="text-gray-500">Try adjusting your search or filters</p>
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </div>

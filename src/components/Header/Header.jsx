@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, User, Menu, X, Phone, Mail, Instagram, Facebook, Twitter, Heart, LogIn } from 'lucide-react';
+import { ShoppingBag, User, Menu, X, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -10,7 +10,7 @@ const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const { cartCount, wishlistItems } = useCart();
     const { isAuthenticated, currentUser } = useAuth();
-    const { contact, logo, nav } = content.header;
+    const { logo, nav } = content.header;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -31,20 +31,7 @@ const Header = () => {
 
     return (
         <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md top-0' : 'bg-transparent top-0'}`}>
-            {/* Top Bar - Hidden on mobile, visible on desktop */}
-            <div className={`hidden md:block w-full bg-gray-900 text-white text-xs py-2 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden py-0' : 'h-auto'}`}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                    <div className="flex space-x-6">
-                        <span className="flex items-center hover:text-purple-400 cursor-pointer transition-colors"><Phone className="w-3 h-3 mr-1" /> {contact.phone}</span>
-                        <span className="flex items-center hover:text-purple-400 cursor-pointer transition-colors"><Mail className="w-3 h-3 mr-1" /> {contact.email}</span>
-                    </div>
-                    <div className="flex space-x-4">
-                        <a href="#" className="hover:text-purple-400 transition-colors"><Instagram className="w-3 h-3" /></a>
-                        <a href="#" className="hover:text-purple-400 transition-colors"><Facebook className="w-3 h-3" /></a>
-                        <a href="#" className="hover:text-purple-400 transition-colors"><Twitter className="w-3 h-3" /></a>
-                    </div>
-                </div>
-            </div>
+            {/* Top Bar removed as per request */}
 
             {/* Main Navigation */}
             <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${isScrolled ? 'py-3' : 'py-5'}`}>

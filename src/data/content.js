@@ -23,7 +23,7 @@ export const content = {
                 subtitle: "Premium Digital Printing Services",
                 description: "Experience the art of perfect printing with our state-of-the-art technology and creative solutions.",
                 buttonText: "Get Started",
-                link: "#"
+                link: "/products"
             },
             {
                 id: 2,
@@ -31,7 +31,7 @@ export const content = {
                 subtitle: "Custom Prints & Designs",
                 description: "Priyopicxel brings you premium-quality custom prints with trusted service, secure payments, and a commitment to excellence",
                 buttonText: "View Catalog",
-                link: "#"
+                link: "/custom-frame"
             }
         ]
     },

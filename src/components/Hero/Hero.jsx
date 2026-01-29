@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Play, Pause, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { content } from '../../data/content';
 
 const Hero = () => {
@@ -70,9 +71,12 @@ const Hero = () => {
                                     {slide.description}
                                 </p>
                                 <div className="pt-4">
-                                    <button className="bg-white text-purple-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:-translate-y-1 hover:shadow-xl flex items-center mx-auto">
+                                    <Link
+                                        to={slide.link}
+                                        className="bg-white text-purple-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:-translate-y-1 hover:shadow-xl flex items-center mx-auto w-fit"
+                                    >
                                         {slide.buttonText} <ArrowRight className="ml-2 w-5 h-5" />
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
