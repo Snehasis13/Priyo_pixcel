@@ -122,22 +122,32 @@ export const CartProvider = ({ children }) => {
         const quantityToAdd = product.quantity && product.quantity > 0 ? product.quantity : 1;
 
         setCartItems((prevItems) => {
-            const existingItemIndex = prevItems.findIndex((item) => item.id === product.id);
+            // Check if product has customization or special attributes that require uniqueness
+            // If it has 'customization', always treat as new item (or check deep equality, but unique is safer/easier)
+            const isCustomized = product.customization && Object.keys(product.customization).length > 0;
 
-            if (existingItemIndex > -1) {
-                // CORRECT: Create a deep copy of the item to avoid mutation
-                const newItems = [...prevItems];
-                const updatedItem = {
-                    ...newItems[existingItemIndex],
-                    quantity: newItems[existingItemIndex].quantity + quantityToAdd
-                };
-                newItems[existingItemIndex] = updatedItem;
-                return newItems; // Return the new state
-            } else {
-                // Ensure we sanitize the product object (don't keep 'quantity' from the payload if we want to standardize)
-                // But generally we just want { ...product, quantity: quantityToAdd }
-                return [...prevItems, { ...product, quantity: quantityToAdd }];
+            // Generate a unique ID for the cart entry if not present
+            // We use a simple random string or UUID logic for local unique ID
+            const cartId = product.cartId || `cart-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            const itemWithId = { ...product, cartId };
+
+            if (!isCustomized) {
+                // Only merge non-customized generic items
+                const existingItemIndex = prevItems.findIndex((item) => item.id === product.id && !item.customization);
+
+                if (existingItemIndex > -1) {
+                    const newItems = [...prevItems];
+                    const updatedItem = {
+                        ...newItems[existingItemIndex],
+                        quantity: newItems[existingItemIndex].quantity + quantityToAdd
+                    };
+                    newItems[existingItemIndex] = updatedItem;
+                    return newItems;
+                }
             }
+
+            // Add as new item
+            return [...prevItems, { ...itemWithId, quantity: quantityToAdd }];
         });
 
         // Side effects outside updater
@@ -160,51 +170,64 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    const removeFromCart = (id, name) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    const updateCartItem = (cartId, updatedData) => {
+        setCartItems((prevItems) => {
+            return prevItems.map((item) => {
+                // strict check on cartId first
+                if (item.cartId === cartId) {
+                    return { ...item, ...updatedData };
+                }
+                return item;
+            });
+        });
+        addToast("Cart updated successfully", { type: 'success' });
+    };
+
+    const removeFromCart = (itemId, name) => {
+        setCartItems((prevItems) => prevItems.filter((item) => (item.cartId || item.id) !== itemId));
         addToast(`${name} removed from cart`, { type: 'error', position: 'top-center' });
     };
 
-    const saveForLater = (id) => {
-        const itemToSave = cartItems.find(item => item.id === id);
+    const saveForLater = (itemId) => {
+        const itemToSave = cartItems.find(item => (item.cartId || item.id) === itemId);
 
         if (itemToSave) {
             setSavedItems(prev => {
-                const exists = prev.find(i => i.id === id);
-                if (exists) return prev; // Prevent duplicates locally
+                // For valid duplicate check, we check cartId if present, else id
+                const exists = prev.find(i => (i.cartId || i.id) === (itemToSave.cartId || itemToSave.id));
+                if (exists) return prev;
                 return [...prev, itemToSave];
             });
-            setCartItems(prev => prev.filter(item => item.id !== id));
+            setCartItems(prev => prev.filter(item => (item.cartId || item.id) !== itemId));
             addToast(`${itemToSave.name} saved for later`, { type: 'success', position: 'bottom-right' });
         }
     };
 
-    const moveToCart = (id) => {
-        const itemToMove = savedItems.find(item => item.id === id);
+    const moveToCart = (itemId) => {
+        const itemToMove = savedItems.find(item => (item.cartId || item.id) === itemId);
         if (itemToMove) {
             addToCart(itemToMove);
-            setSavedItems(prev => prev.filter(item => item.id !== id));
+            setSavedItems(prev => prev.filter(item => (item.cartId || item.id) !== itemId));
         }
     };
 
-    const removeFromSaved = (id, name) => {
-        setSavedItems(prev => prev.filter(item => item.id !== id));
+    const removeFromSaved = (itemId, name) => {
+        setSavedItems(prev => prev.filter(item => (item.cartId || item.id) !== itemId));
         addToast(`${name} removed from saved items`, { type: 'error', position: 'bottom-right' });
     };
 
-    const updateQuantity = (id, amount) => {
+    const updateQuantity = (itemId, amount) => {
         // Rate Limiting: Prevent rapid updates
         const now = Date.now();
         const lastUpdate = lastActivity;
         if (now - lastUpdate < 300) {
-            // Too fast - silently ignore or could show toast
             return;
         }
         refreshSession();
 
         setCartItems((prevItems) => {
             return prevItems.map((item) => {
-                if (item.id === id) {
+                if ((item.cartId || item.id) === itemId) {
                     const newQuantity = item.quantity + amount;
                     if (newQuantity < 1) return item;
                     return { ...item, quantity: newQuantity };
@@ -214,10 +237,10 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    const updateItemQuantity = (id, newQuantity) => {
+    const updateItemQuantity = (itemId, newQuantity) => {
         setCartItems((prevItems) => {
             return prevItems.map((item) => {
-                if (item.id === id) {
+                if ((item.cartId || item.id) === itemId) {
                     // Ensure basic validation
                     const validQuantity = Math.max(1, newQuantity);
                     return { ...item, quantity: validQuantity };
@@ -361,7 +384,8 @@ export const CartProvider = ({ children }) => {
             lastActivity,
             isLoading,
             orders,
-            addOrder
+            addOrder,
+            updateCartItem
         }}>
             {children}
         </CartContext.Provider>

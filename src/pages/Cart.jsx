@@ -16,6 +16,7 @@ import CartItem from '../components/Cart/CartItem';
 import AnimatedButton from '../components/common/AnimatedButton';
 import PriceTicker from '../components/common/PriceTicker';
 
+
 const Cart = () => {
     const navigate = useNavigate();
     const {
@@ -24,6 +25,7 @@ const Cart = () => {
         updateQuantity,
         updateItemQuantity,
         removeFromCart,
+        saveForLater,  // Added
         addToWishlist,
         moveToCart,
         removeFromWishlist,
@@ -40,6 +42,7 @@ const Cart = () => {
     const [processingItem, setProcessingItem] = useState(null); // stores ID of item being processed
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+
 
     const handleAction = async (id, action, actionType = 'default') => {
         if (processingItem) return; // Prevent double clicks
@@ -172,11 +175,13 @@ const Cart = () => {
                                 <AnimatePresence mode="popLayout" initial={false}>
                                     {cartItems.map((item) => (
                                         <CartItem
-                                            key={item.id}
+                                            key={item.cartId || item.id}
                                             item={item}
-                                            onUpdateQuantity={updateItemQuantity}
-                                            onRemove={(id, name) => handleAction(id, () => removeFromCart(id, name))}
-                                            onSaveForLater={(id) => handleAction(id, () => addToWishlist(item))}
+                                            onUpdateQuantity={(id, qty) => updateItemQuantity(item.cartId || item.id, qty)}
+                                            onRemove={() => handleAction(item.cartId || item.id, () => removeFromCart(item.cartId || item.id, item.name))}
+                                            // Fix: correctly pass item to customize
+                                            onCustomize={() => navigate('/custom-frame', { state: { editItem: item } })}
+                                            onSaveForLater={() => handleAction(item.cartId || item.id, () => saveForLater(item.cartId || item.id))}
                                             processingItem={processingItem}
                                         />
                                     ))}
@@ -308,6 +313,8 @@ const Cart = () => {
                 total={cartTotal}
                 isLoading={isCheckingOut}
             />
+
+
 
             <SessionTimeoutModal
                 isOpen={showSessionWarning}

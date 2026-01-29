@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import {
     Shirt,
     Image as ImageIcon,
@@ -11,12 +13,16 @@ import {
     ArrowLeft,
     Sparkles
 } from 'lucide-react';
-import PhotoFrameConfigurator from '../components/CustomFrame/PhotoFrameConfigurator';
 import ProductCustomizationForm from '../components/CustomFrame/ProductCustomizationForm';
 import Reveal from '../components/Reveal/Reveal';
 
 const CustomPhotoFrame = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { addToCart, updateCartItem } = useCart();
+
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [editItem, setEditItem] = useState(null);
 
     const products = [
         {
@@ -77,6 +83,69 @@ const CustomPhotoFrame = () => {
         }
     ];
 
+    // Check for edit mode
+    useEffect(() => {
+        if (location.state?.editItem) {
+            const item = location.state.editItem;
+            setEditItem(item);
+            // Find the matching product category to open the form immediately
+            const matchingProduct = products.find(p => p.id === item.id);
+            if (matchingProduct) {
+                setSelectedProduct(matchingProduct);
+            }
+        }
+    }, [location.state]);
+
+    // Mock price calculator
+    const calculatePrice = (product, data) => {
+        let base = 599;
+        if (data.productCustomization.quantity > 1) base *= data.productCustomization.quantity;
+        return base;
+    };
+
+    const handleFormSubmit = (formData) => {
+        // Construct the final product object
+        const finalProduct = {
+            ...selectedProduct,
+            price: calculatePrice(selectedProduct, formData),
+            image: formData.uploads.preview || (selectedProduct?.icon ? null : null), // Use uploaded image or fallback logic
+            // Note: Icon is component, can't save to JSON potentially if not serializable
+
+            customization: {
+                ...formData.productCustomization,
+                uploads: formData.uploads
+            },
+            personalDetails: formData.personalDetails,
+            addressDetails: formData.addressDetails
+        };
+
+        if (editItem) {
+            // Update existing cart item
+            updateCartItem(editItem.cartId, {
+                customization: finalProduct.customization,
+                personalDetails: finalProduct.personalDetails,
+                addressDetails: finalProduct.addressDetails,
+                image: finalProduct.image,
+                // price: finalProduct.price // Should update price? Yes.
+                price: finalProduct.price
+            });
+            navigate('/cart');
+        } else {
+            // Add new item
+            addToCart({
+                ...finalProduct,
+                id: selectedProduct.id,
+                name: selectedProduct.name,
+                price: 599 // Base price, will be updated by qty logic in CartContext or used as unit price?
+                // CartContext usually handles unit price * quantity. 
+                // calculatePrice returned total? No, base * qty.
+                // Context expects unit price usually.
+                // Let's stick to unit price 599.
+            });
+        }
+    };
+
+
     // Animation Variants
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -99,8 +168,6 @@ const CustomPhotoFrame = () => {
             }
         }
     };
-
-
 
     return (
         <div className="min-h-screen bg-gray-50 pt-24 pb-20">
@@ -182,7 +249,11 @@ const CustomPhotoFrame = () => {
                     >
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 md:mb-8">
                             <button
-                                onClick={() => setSelectedProduct(null)}
+                                onClick={() => {
+                                    setSelectedProduct(null);
+                                    setEditItem(null);
+                                    navigate('.', { state: {} });
+                                }}
                                 className="group flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors font-medium"
                             >
                                 <div className="p-2 rounded-full bg-white border border-gray-200 group-hover:border-purple-200 transition-colors shadow-sm">
@@ -195,7 +266,19 @@ const CustomPhotoFrame = () => {
                         <div className="max-w-4xl mx-auto">
                             <ProductCustomizationForm
                                 selectedProduct={selectedProduct}
-                                onBack={() => setSelectedProduct(null)}
+                                onBack={() => {
+                                    setSelectedProduct(null);
+                                    setEditItem(null);
+                                    navigate('.', { state: {} });
+                                }}
+                                onSubmit={handleFormSubmit}
+                                initialValues={editItem ? {
+                                    productCustomization: editItem.customization,
+                                    personalDetails: editItem.personalDetails,
+                                    addressDetails: editItem.addressDetails,
+                                    uploads: editItem.customization?.uploads
+                                } : null}
+                                isEditing={!!editItem}
                             />
                         </div>
                     </motion.div>

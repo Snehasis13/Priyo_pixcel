@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Trash2, Heart, ShoppingBag } from 'lucide-react';
+import { Trash2, Heart, ShoppingBag, Edit } from 'lucide-react';
 import QuantitySelector from '../QuantitySelector/QuantitySelector';
 import Image from '../common/Image';
 import AnimatedButton from '../common/AnimatedButton';
@@ -13,6 +13,7 @@ const CartItem = ({
     onRemove,
     onSaveForLater,
     onMoveToCart,
+    onCustomize,
     processingItem,
     isWishlist = false
 }) => {
@@ -62,6 +63,15 @@ const CartItem = ({
                             {item.variant && (
                                 <p className="text-sm text-gray-500 mt-1">{item.variant}</p>
                             )}
+                            {/* Display Customization Summary if exists */}
+                            {item.customization && (
+                                <div className="text-xs text-purple-600 mt-1 space-y-0.5">
+                                    {item.customization.size && <span className="mr-2">Size: {item.customization.size}</span>}
+                                    {item.customization.color && <span className="mr-2 px-1 rounded" style={{ backgroundColor: item.customization.color }}>&nbsp;&nbsp;&nbsp;</span>}
+                                    {item.customization.message && <span className="block italic truncate">"{item.customization.message}"</span>}
+                                </div>
+                            )}
+
                             {/* Mobile Only Unit Price */}
                             <p className="text-xs text-gray-400 mt-1 md:hidden">
                                 Unit Price: ₹{item.price}
@@ -91,9 +101,17 @@ const CartItem = ({
                                     </>
                                 ) : (
                                     <>
+                                        {/* Customize Button */}
+                                        <button
+                                            onClick={() => onCustomize(item)}
+                                            className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 transition-colors bg-purple-50 hover:bg-purple-100 px-2.5 py-1 rounded-lg"
+                                        >
+                                            <Edit className="w-3 h-3" /> Customize
+                                        </button>
+
                                         <button
                                             onClick={() => onRemove(item.id, item.name)}
-                                            className="text-xs text-red-500 hover:text-red-700 font-medium flex items-center gap-1 transition-colors"
+                                            className="text-xs text-red-500 hover:text-red-700 font-medium flex items-center gap-1 transition-colors ml-2"
                                         >
                                             <Trash2 className="w-3 h-3" /> Remove
                                         </button>
@@ -134,10 +152,11 @@ const CartItem = ({
                             onUpdate={(val) => onUpdateQuantity(item.id, val)}
                         />
                     )}
-                    <div className="flex gap-3">
-                        {/* Mobile Actions Logic (Same as before) */}
+                    <div className="flex gap-2">
+                        {/* Mobile Actions Logic */}
                         {!isWishlist && (
                             <>
+                                <AnimatedButton variant="secondary" onClick={() => onCustomize(item)} className="text-xs px-3 py-2 flex-1 text-purple-600 bg-purple-50 border-purple-100"><Edit className="w-4 h-4" /> Edit</AnimatedButton>
                                 <AnimatedButton variant="danger" onClick={() => onRemove(item.id, item.name)} className="text-xs px-3 py-2 flex-1"><Trash2 className="w-4 h-4" /> Remove</AnimatedButton>
                                 <AnimatedButton variant="ghost" onClick={() => onSaveForLater(item.id)} className="text-xs px-3 py-2 flex-1"><Heart className="w-4 h-4" /> Save</AnimatedButton>
                             </>

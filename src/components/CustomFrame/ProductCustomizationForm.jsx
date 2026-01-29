@@ -27,13 +27,13 @@ import {
 } from 'lucide-react';
 import ModernFileUpload from '../common/ModernFileUpload';
 
-const ProductCustomizationForm = ({ selectedProduct, onBack }) => {
+const ProductCustomizationForm = ({ selectedProduct, onBack, onSubmit, initialValues, isEditing }) => {
     // State Management
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
-        personalDetails: { fullName: '', email: '', phone: '' },
-        addressDetails: { street: '', city: '', state: '', zip: '', country: 'India' },
-        productCustomization: {
+        personalDetails: initialValues?.personalDetails || { fullName: '', email: '', phone: '' },
+        addressDetails: initialValues?.addressDetails || { street: '', city: '', state: '', zip: '', country: 'India' },
+        productCustomization: initialValues?.productCustomization || {
             message: '', color: '#000000', size: 'M', instructions: '', quantity: 1,
             frameType: 'led-wooden', shape: 'rectangular', orientation: 'portrait', customSize: '', customShape: '',
             mugType: 'standard', handlePosition: 'right',
@@ -42,23 +42,26 @@ const ProductCustomizationForm = ({ selectedProduct, onBack }) => {
             keychainShape: 'rectangular', keychainMaterial: 'acrylic', keychainSize: 'medium',
             wallHangingSize: '12x18', wallHangingMaterial: 'canvas',
         },
-        uploads: { file: null, preview: null }
+        uploads: initialValues?.uploads || { file: null, preview: null }
     });
 
-    // Set initial quantity based on product type
+    // Set initial quantity based on product type ONLY if not editing (to preserve edit qty)
     useEffect(() => {
-        if (selectedProduct?.id === 'cards') {
-            setFormData(prev => ({
-                ...prev,
-                productCustomization: { ...prev.productCustomization, quantity: 50 }
-            }));
-        } else {
-            setFormData(prev => ({
-                ...prev,
-                productCustomization: { ...prev.productCustomization, quantity: 1 }
-            }));
+        if (!isEditing) {
+            if (selectedProduct?.id === 'cards') {
+                setFormData(prev => ({
+                    ...prev,
+                    productCustomization: { ...prev.productCustomization, quantity: 50 }
+                }));
+            } else {
+                setFormData(prev => ({
+                    ...prev,
+                    productCustomization: { ...prev.productCustomization, quantity: 1 }
+                }));
+            }
         }
-    }, [selectedProduct?.id]);
+    }, [selectedProduct?.id, isEditing]);
+
     const [errors, setErrors] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -239,8 +242,12 @@ const ProductCustomizationForm = ({ selectedProduct, onBack }) => {
 
     const handleSubmit = () => {
         if (validateCurrentStep()) {
-            console.log('Form Submitted:', { selectedProduct, formData });
-            setIsSubmitted(true);
+            if (onSubmit) {
+                onSubmit(formData);
+            } else {
+                console.log('Form Submitted:', { selectedProduct, formData });
+                setIsSubmitted(true);
+            }
         }
     };
 
@@ -1524,7 +1531,7 @@ const ProductCustomizationForm = ({ selectedProduct, onBack }) => {
                             }`}
                     >
                         {currentStep === TOTAL_STEPS ? (
-                            <>Place Order <ShoppingBag size={20} /></>
+                            <>{isEditing ? 'Update Cart' : 'Place Order'} <ShoppingBag size={20} /></>
                         ) : (
                             <>Next Step <ChevronRight size={20} /></>
                         )}
