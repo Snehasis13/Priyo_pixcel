@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
+import CheckoutModal from '../components/Cart/CheckoutModal';
 import {
     Truck, ShieldCheck, ArrowLeft, Minus, Plus, Heart,
     Share2, ChevronRight, Package, Info, ArrowRight, Check, X
@@ -22,6 +23,10 @@ const ProductDetails = () => {
     const [selectedImage, setSelectedImage] = useState(0);
     const [isZoomed, setIsZoomed] = useState(false);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+    // Checkout Modal State
+    const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+    const [isProcessingCheckout, setIsProcessingCheckout] = useState(false);
 
     const product = products.find(p => p.id === parseInt(id));
     const isInWishlist = wishlistItems?.some(item => item.id === product?.id);
@@ -75,8 +80,34 @@ const ProductDetails = () => {
     };
 
     const handleBuyNow = () => {
-        addToCart({ ...product, quantity });
-        navigate('/checkout');
+        if (!product.inStock) return;
+        setShowCheckoutModal(true);
+    };
+
+    const handleConfirmCheckout = async (formData) => {
+        setIsProcessingCheckout(true);
+        // Simulate CSRF/Security check setup
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        const csrfToken = Math.random().toString(36).substring(7);
+
+        // Create a temporary cart item
+        const tempItem = {
+            ...product,
+            quantity: quantity,
+            selectedColor: product.colors?.[0], // Default if any
+            selectedSize: product.sizes?.[0]    // Default if any
+        };
+
+        navigate('/checkout', {
+            state: {
+                items: [tempItem],
+                total: product.price * quantity,
+                csrfToken,
+                formData // Pass captured form data
+            }
+        });
+        setIsProcessingCheckout(false);
     };
 
     // Zoom Logic
@@ -278,6 +309,17 @@ const ProductDetails = () => {
 
                 </div>
             </div>
+            {/* Checkout Modal for Buy Now */}
+            {product && (
+                <CheckoutModal
+                    isOpen={showCheckoutModal}
+                    onClose={() => setShowCheckoutModal(false)}
+                    onConfirm={handleConfirmCheckout}
+                    cartItems={[{ ...product, quantity }]}
+                    total={product.price * quantity}
+                    isLoading={isProcessingCheckout}
+                />
+            )}
         </div>
     );
 };

@@ -86,7 +86,7 @@ const Cart = () => {
         }
     };
 
-    const handleConfirmCheckout = async () => {
+    const handleConfirmCheckout = async (formData) => {
         setIsCheckingOut(true);
         // Simulate CSRF/Security check setup
         await new Promise(resolve => setTimeout(resolve, 800));
@@ -97,7 +97,8 @@ const Cart = () => {
             state: {
                 items: cartItems,
                 total: cartTotal,
-                csrfToken
+                csrfToken,
+                formData // Pass captured form data
             }
         });
         setIsCheckingOut(false);

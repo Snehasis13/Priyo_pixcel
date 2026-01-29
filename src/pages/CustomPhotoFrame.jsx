@@ -19,7 +19,7 @@ import Reveal from '../components/Reveal/Reveal';
 const CustomPhotoFrame = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { addToCart, updateCartItem } = useCart();
+    const { addToCart, updateCartItem, setDirectCheckoutItem } = useCart();
 
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [editItem, setEditItem] = useState(null);
@@ -126,21 +126,43 @@ const CustomPhotoFrame = () => {
                 personalDetails: finalProduct.personalDetails,
                 addressDetails: finalProduct.addressDetails,
                 image: finalProduct.image,
-                // price: finalProduct.price // Should update price? Yes.
                 price: finalProduct.price
             });
             navigate('/cart');
         } else {
-            // Add new item
-            addToCart({
+            // DIRECT BUYOUT: Skip cart, go straight to checkout with formData
+            const checkoutItem = {
                 ...finalProduct,
                 id: selectedProduct.id,
                 name: selectedProduct.name,
-                price: 599 // Base price, will be updated by qty logic in CartContext or used as unit price?
-                // CartContext usually handles unit price * quantity. 
-                // calculatePrice returned total? No, base * qty.
-                // Context expects unit price usually.
-                // Let's stick to unit price 599.
+                // price logic: finalProduct.price includes total for qty? 
+                // calculatePrice returns total base * qty.
+                // Checkout expects unit price usually, but let's see logic.
+                // If calculatePrice returns TOTAL, and we set quantity, total will be price * quantity.
+                // Let's ensure consistency.
+                // calculatePrice: "if (qty > 1) base *= qty". returns total.
+                // So unit price = finalProduct.price / qty. 
+                price: finalProduct.price / (formData.productCustomization.quantity || 1),
+                quantity: formData.productCustomization.quantity || 1
+            };
+
+            // Use context for heavy data (image) to avoid state size limits
+            setDirectCheckoutItem(checkoutItem);
+
+            // Generate CSRF token for checkout validation
+            const csrfToken = Math.random().toString(36).substring(7);
+
+            navigate('/checkout', {
+                state: {
+                    fromCustomFrame: true,
+                    // items: [checkoutItem], // REMOVED: Passed via context
+                    total: finalProduct.price, // Total amount can still be passed or derived
+                    csrfToken: csrfToken,
+                    formData: { // Pass pre-filled form data
+                        personalDetails: formData.personalDetails,
+                        addressDetails: formData.addressDetails
+                    }
+                }
             });
         }
     };
@@ -289,3 +311,4 @@ const CustomPhotoFrame = () => {
 };
 
 export default CustomPhotoFrame;
+

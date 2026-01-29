@@ -7,21 +7,39 @@ import Reveal from '../components/Reveal/Reveal';
 const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { items, total, csrfToken } = location.state || {};
+    const { addOrder, directCheckoutItem, setDirectCheckoutItem } = useCart();
+
+    // Determine source of items: Context (Buy Now) OR Location State (Cart Checkout)
+    const stateItems = location.state?.items;
+    const items = directCheckoutItem ? [directCheckoutItem] : stateItems;
+
+    const total = directCheckoutItem
+        ? directCheckoutItem.price * directCheckoutItem.quantity
+        : location.state?.total;
+
+    const csrfToken = location.state?.csrfToken;
+
     const [isValidSession, setIsValidSession] = useState(true);
-    const { addOrder } = useCart();
     const [isProcessing, setIsProcessing] = useState(false);
 
     useEffect(() => {
-        // Mock Session Validation
-        if (!location.state || !csrfToken) {
+        // Validation: Must have items AND csrfToken
+        if ((!items || items.length === 0) || !csrfToken) {
             setIsValidSession(false);
             const timer = setTimeout(() => {
                 navigate('/cart');
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [location.state, csrfToken, navigate]);
+    }, [items, csrfToken, navigate]);
+
+    // Cleanup direct item on unmount or navigation away
+    useEffect(() => {
+        return () => {
+            // Optional: clear direct item when leaving checkout
+            // setDirectCheckoutItem(null); 
+        };
+    }, [setDirectCheckoutItem]);
 
     const handlePlaceOrder = async () => {
         setIsProcessing(true);
@@ -36,6 +54,7 @@ const Checkout = () => {
         };
 
         addOrder(order);
+        setDirectCheckoutItem(null); // Clear direct item after purchase
         setIsProcessing(false);
         navigate('/dashboard'); // Go to dashboard to see new order count
     };

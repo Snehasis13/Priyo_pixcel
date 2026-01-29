@@ -19,6 +19,9 @@ export const CartProvider = ({ children }) => {
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
+    // New state for direct checkout (Buy Now)
+    const [directCheckoutItem, setDirectCheckoutItem] = useState(null);
+
     const [savedItems, setSavedItems] = useState(() => {
         // Migration: check for 'wishlistItems' first, then 'savedItems'
         const wishlist = localStorage.getItem('wishlistItems');
@@ -361,6 +364,8 @@ export const CartProvider = ({ children }) => {
         <CartContext.Provider value={{
             cartItems,
             savedItems,
+            directCheckoutItem,
+            setDirectCheckoutItem,
             addToCart,
             removeFromCart,
             saveForLater,

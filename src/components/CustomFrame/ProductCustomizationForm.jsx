@@ -241,13 +241,19 @@ const ProductCustomizationForm = ({ selectedProduct, onBack, onSubmit, initialVa
     };
 
     const handleSubmit = () => {
-        if (validateCurrentStep()) {
+        console.log("ProductCustomizationForm: handleSubmit called");
+        const isValid = validateCurrentStep();
+        console.log("ProductCustomizationForm: Validation result:", isValid);
+        if (isValid) {
+            console.log("ProductCustomizationForm: onsubmit prop present?", !!onSubmit);
             if (onSubmit) {
                 onSubmit(formData);
             } else {
                 console.log('Form Submitted:', { selectedProduct, formData });
                 setIsSubmitted(true);
             }
+        } else {
+            console.log("ProductCustomizationForm: Validation failed", errors);
         }
     };
 
@@ -1370,6 +1376,10 @@ const ProductCustomizationForm = ({ selectedProduct, onBack, onSubmit, initialVa
                                 </div>
                                 <div className="text-right">
                                     <p className="font-semibold text-purple-600">Quantity: {formData.productCustomization.quantity}</p>
+                                    <p className="text-xl font-bold text-gray-900 mt-1">
+                                        ₹{(599 * formData.productCustomization.quantity).toLocaleString()}
+                                    </p>
+                                    <p className="text-xs text-gray-500">Unit Price: ₹599</p>
                                 </div>
                             </div>
 
