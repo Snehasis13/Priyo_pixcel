@@ -10,7 +10,6 @@ import CartSkeleton from '../components/Cart/CartSkeleton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 import Image from '../components/common/Image';
-import CheckoutModal from '../components/Cart/CheckoutModal';
 import SessionTimeoutModal from '../components/Cart/SessionTimeoutModal';
 import CartItem from '../components/Cart/CartItem';
 import AnimatedButton from '../components/common/AnimatedButton';
@@ -41,7 +40,6 @@ const Cart = () => {
     const { addToast } = useToast();
     const [processingItem, setProcessingItem] = useState(null); // stores ID of item being processed
     const [isCheckingOut, setIsCheckingOut] = useState(false);
-    const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
 
     const handleAction = async (id, action, actionType = 'default') => {
@@ -79,28 +77,20 @@ const Cart = () => {
         // Server Validation (Price Protection)
         setIsCheckingOut(true);
         const isValid = await validateCartWithServer();
-        setIsCheckingOut(false);
 
         if (isValid) {
-            setShowCheckoutModal(true);
+            // Proceed to Checkout Directly
+            const csrfToken = Math.random().toString(36).substring(7);
+
+            navigate('/checkout', {
+                state: {
+                    items: cartItems,
+                    total: cartTotal,
+                    csrfToken,
+                    // Navigating to checkout without pre-filled data
+                }
+            });
         }
-    };
-
-    const handleConfirmCheckout = async (formData) => {
-        setIsCheckingOut(true);
-        // Simulate CSRF/Security check setup
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        const csrfToken = Math.random().toString(36).substring(7);
-
-        navigate('/checkout', {
-            state: {
-                items: cartItems,
-                total: cartTotal,
-                csrfToken,
-                formData // Pass captured form data
-            }
-        });
         setIsCheckingOut(false);
     };
 
@@ -230,11 +220,18 @@ const Cart = () => {
                                     <PriceTicker price={total} className="text-2xl font-bold text-[#EA7704]" />
                                 </div>
 
+                                {cartItems.some(item => item.isValid === false) && (
+                                    <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">
+                                        Please fix or remove invalid items to proceed.
+                                    </div>
+                                )}
+
                                 <AnimatedButton
                                     variant="primary"
                                     onClick={handleCheckoutClick}
                                     loading={isCheckingOut}
-                                    className="w-full py-4 text-lg font-bold"
+                                    disabled={cartItems.some(item => item.isValid === false)}
+                                    className={`w-full py-4 text-lg font-bold ${cartItems.some(item => item.isValid === false) ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 >
                                     Proceed to Checkout
                                     <ArrowRight className="w-5 h-5 ml-2" />
@@ -306,14 +303,7 @@ const Cart = () => {
                 )}
             </div>
 
-            <CheckoutModal
-                isOpen={showCheckoutModal}
-                onClose={() => setShowCheckoutModal(false)}
-                onConfirm={handleConfirmCheckout}
-                cartItems={cartItems}
-                total={cartTotal}
-                isLoading={isCheckingOut}
-            />
+
 
 
 

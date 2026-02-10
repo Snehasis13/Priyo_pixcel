@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Trash2, Heart, ShoppingBag, Edit } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2, Heart, ShoppingBag, Edit, ChevronDown, ChevronUp } from 'lucide-react';
 import QuantitySelector from '../QuantitySelector/QuantitySelector';
 import Image from '../common/Image';
 import AnimatedButton from '../common/AnimatedButton';
@@ -17,6 +17,7 @@ const CartItem = ({
     processingItem,
     isWishlist = false
 }) => {
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
     // Animation variants
     const itemVariants = {
@@ -63,12 +64,56 @@ const CartItem = ({
                             {item.variant && (
                                 <p className="text-sm text-gray-500 mt-1">{item.variant}</p>
                             )}
+
+                            {/* Validation Error Display */}
+                            {item.isValid === false && (
+                                <div className="mt-2 p-2 bg-red-50 border border-red-100 rounded-lg flex items-start gap-2 text-sm text-red-600">
+                                    <span className="font-bold">⚠️ Issue:</span> {item.validationError || "Invalid item"}
+                                </div>
+                            )}
+
+                            {/* Display Customization Summary if exists */}
                             {/* Display Customization Summary if exists */}
                             {item.customization && (
-                                <div className="text-xs text-purple-600 mt-1 space-y-0.5">
-                                    {item.customization.size && <span className="mr-2">Size: {item.customization.size}</span>}
-                                    {item.customization.color && <span className="mr-2 px-1 rounded" style={{ backgroundColor: item.customization.color }}>&nbsp;&nbsp;&nbsp;</span>}
-                                    {item.customization.message && <span className="block italic truncate">"{item.customization.message}"</span>}
+                                <div className="mt-2">
+                                    <button
+                                        onClick={() => setIsDetailsOpen(!isDetailsOpen)}
+                                        className="text-xs text-[#EA7704] font-medium flex items-center gap-1 hover:underline focus:outline-none mb-2"
+                                    >
+                                        {isDetailsOpen ? 'Hide Details' : 'View Details'}
+                                        {isDetailsOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                                    </button>
+
+                                    <AnimatePresence>
+                                        {isDetailsOpen && (
+                                            <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: 'auto', opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="overflow-hidden"
+                                            >
+                                                <div className="text-xs text-purple-600 space-y-1 bg-purple-50 p-2 rounded-lg">
+                                                    {Object.entries(item.customization).map(([key, value]) => {
+                                                        if (key === 'uploads') return null; // Skip uploads object
+                                                        if (!value) return null; // Skip empty values
+                                                        return (
+                                                            <div key={key} className="flex gap-1">
+                                                                <span className="font-semibold capitalize text-purple-800">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                                                                <span className="text-purple-900 truncate">
+                                                                    {key === 'color' ? (
+                                                                        <span className="inline-block w-4 h-4 rounded-full border border-gray-200 align-middle ml-1" style={{ backgroundColor: value }} title={value}></span>
+                                                                    ) : (
+                                                                        value.toString()
+                                                                    )}
+                                                                </span>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             )}
 

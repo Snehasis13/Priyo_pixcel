@@ -1,0 +1,1008 @@
+
+> priyopixcel@0.0.0 lint
+> eslint .
+
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Auth/AuthPage.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Blog/BlogPostCard.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Blog/BlogSidebar.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  7:51  error  'categories' is defined but never used                                         no-unused-vars
+  7:63  error  'tags' is defined but never used                                               no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Cart/CartItem.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/CartNotification/CartNotification.jsx
+  5:58  error  'onViewCart' is defined but never used  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/CustomFrame/ImageUpload.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/CustomFrame/PhotoFrameConfigurator.jsx
+    2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            no-unused-vars
+   25:22  error  'setTextFont' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              no-unused-vars
+   28:26  error  'setTextPosition' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          no-unused-vars
+   66:11  error  'fonts' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-unused-vars
+  362:72  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  360 |                                     <div className="flex items-center gap-1">
+  361 |                                         <Clock className="w-3 h-3" />
+> 362 |                                         <span>Est. Delivery: {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}</span>
+      |                                                                        ^^^^^^^^^^ Cannot call impure function
+  363 |                                     </div>
+  364 |                                     <button
+  365 |                                         onClick={() => setShowCareInfo(true)}  react-hooks/purity
+  429:62  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  427 |                                 )}
+  428 |                                 <div className="text-xs text-gray-400 pt-2 border-t border-gray-200 mt-2">
+> 429 |                                     Est. Delivery: {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+      |                                                              ^^^^^^^^^^ Cannot call impure function
+  430 |                                 </div>
+  431 |                             </div>
+  432 |                         </motion.div>                                                                                        react-hooks/purity
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/CustomFrame/ProductCustomizationForm.jsx
+     2:10   error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-unused-vars
+    52:13   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  50 |     useEffect(() => {
+  51 |         if (!isEditing) {
+> 52 |             setFormData(prev => ({
+     |             ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  53 |                 ...prev,
+  54 |                 productCustomization: { ...prev.productCustomization, quantity: 1 }
+  55 |             }));  react-hooks/set-state-in-effect
+   177:86   error  Unnecessary escape character: \.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 no-useless-escape
+   177:99   error  Unnecessary escape character: \.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 no-useless-escape
+   177:110  error  Unnecessary escape character: \/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 no-useless-escape
+   177:115  error  Unnecessary escape character: \.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 no-useless-escape
+  1214:17   error  Unexpected lexical declaration in case block                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-case-declarations
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/CustomFrame/ProductOnlyCustomizationForm.jsx
+    2:10   error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        no-unused-vars
+   52:9    error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  50 |     // Set initial quantity based on product type
+  51 |     useEffect(() => {
+> 52 |         setFormData(prev => ({
+     |         ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  53 |             ...prev,
+  54 |             productCustomization: { ...prev.productCustomization, quantity: 1 }
+  55 |         }));  react-hooks/set-state-in-effect
+  121:82   error  Unnecessary escape character: \.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-useless-escape
+  121:95   error  Unnecessary escape character: \.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-useless-escape
+  121:106  error  Unnecessary escape character: \/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-useless-escape
+  121:111  error  Unnecessary escape character: \.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-useless-escape
+  154:38   error  'data' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Features/Features.jsx
+  28:50  error  'index' is defined but never used  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Feedback/SuccessConfirmation.jsx
+  21:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  19 |     useEffect(() => {
+  20 |         if (isOpen) {
+> 21 |             setShowConfetti(true);
+     |             ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  22 |             // Stop confetti after 3 seconds
+  23 |             const timer = setTimeout(() => setShowConfetti(false), 3000);
+  24 |             return () => clearTimeout(timer);  react-hooks/set-state-in-effect
+  39:9   error  'timestamp' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Header/Header.jsx
+  12:30  error  'currentUser' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Hero/Hero.jsx
+  48:37  error  'index' is defined but never used  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/ProductCarousel/ProductCarousel.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/Toast/Toast.jsx
+  1:17  error  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/common/AnimatedButton.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/common/CollapsibleSection.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  5:86  error  'Icon' is defined but never used                                               no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/common/ErrorBoundary.jsx
+  9:37  error  'error' is defined but never used  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/common/Image.jsx
+  23:17  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  21 |
+  22 |     if (error || !src) {
+> 23 |         return <Placeholder />;
+     |                 ^^^^^^^^^^^ This component is created during render
+  24 |     }
+  25 |
+  26 |     return (
+
+  14 |
+  15 |     // Generic placeholder - Light gray background with an icon or just empty
+> 16 |     const Placeholder = () => (
+     |                         ^^^^^^^
+> 17 |         <div className={`bg-gray-200 flex items-center justify-center h-full w-full ${className}`} {...props}>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 18 |             <span className="text-gray-400 text-xs text-center px-1">Img Err</span>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 19 |         </div>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 20 |     );
+     | ^^^^^^ The component is created during render here
+  21 |
+  22 |     if (error || !src) {
+  23 |         return <Placeholder />;  react-hooks/static-components
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/common/ModernFileUpload.jsx
+  10:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-unused-vars
+  32:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  30 |             if (uploadedFile instanceof File) {
+  31 |                 const objectUrl = URL.createObjectURL(uploadedFile);
+> 32 |                 setPreviewUrl(objectUrl);
+     |                 ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  33 |                 return () => URL.revokeObjectURL(objectUrl);
+  34 |             }
+  35 |             // If it's a string (e.g., existing URL or base64 passed from parent)  react-hooks/set-state-in-effect
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/components/common/PriceTicker.jsx
+   2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      no-unused-vars
+  12:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  10 |         if (price !== prevPrice.current) {
+  11 |             if (price > prevPrice.current) {
+> 12 |                 setDirection(1);
+     |                 ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  13 |             } else {
+  14 |                 setDirection(-1);
+  15 |             }  react-hooks/set-state-in-effect
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/context/AuthContext.jsx
+   8:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-refresh/only-export-components
+  33:9   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  31 |
+  32 |     useEffect(() => {
+> 33 |         checkAuth();
+     |         ^^^^^^^^^ Avoid calling setState() directly within an effect
+  34 |     }, []);
+  35 |
+  36 |     const login = (userData) => {  react-hooks/set-state-in-effect
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/context/CartContext.jsx
+    7:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-refresh/only-export-components
+   40:54  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  38 |
+  39 |     // Security State
+> 40 |     const [lastActivity, setLastActivity] = useState(Date.now());
+     |                                                      ^^^^^^^^^^ Cannot call impure function
+  41 |     const [showSessionWarning, setShowSessionWarning] = useState(false);
+  42 |     const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 mins
+  43 |     const WARNING_THRESHOLD = 5 * 60 * 1000; // 5 mins before timeout                                                                                                                                                                                                                                                                                                                                                                        react-hooks/purity
+   48:11  error    'setWishlistItems' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 no-unused-vars
+   85:17  error    Error: Cannot access variable before it is declared
+
+`clearCart` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  83 |
+  84 |             if (timeRemaining <= 0) {
+> 85 |                 clearCart();
+     |                 ^^^^^^^^^ `clearCart` accessed before it is declared
+  86 |                 setShowSessionWarning(false);
+  87 |                 addToast("Session expired due to inactivity. Cart cleared.", { type: 'error' });
+  88 |             } else if (timeRemaining <= WARNING_THRESHOLD) {
+
+  254 |     };
+  255 |
+> 256 |     const clearCart = () => {
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 257 |         setCartItems([]);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 258 |         localStorage.removeItem('cartItems');
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 259 |         setShowSessionWarning(false); // Reset warning
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 260 |     };
+      | ^^^^^^^ `clearCart` is declared here
+  261 |
+  262 |     const validateCartWithServer = async () => {
+  263 |         // Simulating server-side validation  react-hooks/immutability
+   95:8   warning  React Hook useEffect has missing dependencies: 'SESSION_TIMEOUT', 'WARNING_THRESHOLD', and 'addToast'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react-hooks/exhaustive-deps
+  271:41  error    'index' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/context/ToastContext.jsx
+   5:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           react-refresh/only-export-components
+  37:17  error    Error: Cannot access variable before it is declared
+
+`removeToast` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  35 |         if (autoDismiss) {
+  36 |             setTimeout(() => {
+> 37 |                 removeToast(id);
+     |                 ^^^^^^^^^^^ `removeToast` accessed before it is declared
+  38 |             }, duration);
+  39 |         }
+  40 |
+
+  42 |     }, []);
+  43 |
+> 44 |     const removeToast = useCallback((id) => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 45 |         setToasts((prev) => prev.filter((toast) => toast.id !== id));
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     }, []);
+     | ^^^^^^^^^^^^ `removeToast` is declared here
+  47 |
+  48 |     const getPositionClasses = (position) => {
+  49 |         switch (position) {  react-hooks/immutability
+  42:8   warning  React Hook useCallback has a missing dependency: 'removeToast'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/exhaustive-deps
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/hooks/useGoogleAuth.js
+   76:18  error  'e' is defined but never used                                                              no-unused-vars
+  127:19  error  'tokenData' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/hooks/useOrderSubmission.js
+  5:26  error  'setGapiToken' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/AllProducts.jsx
+  6:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/Blog.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/Cart.jsx
+    2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-unused-vars
+   24:9   error  'updateQuantity' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   no-unused-vars
+   28:9   error  'addToWishlist' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-unused-vars
+   45:45  error  'actionType' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  no-unused-vars
+  103:11  error  'savings' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          no-unused-vars
+  314:46  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  312 |                 onExtend={extendSession}
+  313 |                 onLeave={() => navigate('/')}
+> 314 |                 timeLeft={SESSION_TIMEOUT - (Date.now() - lastActivity)}
+      |                                              ^^^^^^^^^^ Cannot call impure function
+  315 |             />
+  316 |         </div>
+  317 |     );  react-hooks/purity
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/Checkout.jsx
+   24:9   error    'retrySubmission' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       no-unused-vars
+   31:11  warning  The 'items' conditional could make the dependencies of useEffect Hook (at line 82) change on every render. To fix this, wrap the initialization of 'items' in its own useMemo() Hook                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/exhaustive-deps
+   37:11  error    'csrfToken' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             no-unused-vars
+   76:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  74 |         // We relax csrfToken check if pulling from context to allow page refreshes.
+  75 |         if (!items || items.length === 0) {
+> 76 |             setIsValidSession(false);
+     |             ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  77 |             const timer = setTimeout(() => {
+  78 |                 navigate('/cart');
+  79 |             }, 3000);                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/set-state-in-effect
+   94:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  92 |     useEffect(() => {
+  93 |         if (submittedOrderId && orderDetails) {
+> 94 |             setShowSuccessModal(true);
+     |             ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  95 |         }
+  96 |     }, [submittedOrderId, orderDetails]);
+  97 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react-hooks/set-state-in-effect
+  246:28  error    'details' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   no-unused-vars
+  268:11  error    'handleRetry' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           no-unused-vars
+  340:34  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  338 |                             </h2>
+  339 |                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+> 340 |                                 <InputField
+      |                                  ^^^^^^^^^^ This component is created during render
+  341 |                                     label="Full Name"
+  342 |                                     name="fullName"
+  343 |                                     value={formData.fullName}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                                                      react-hooks/static-components
+  348:34  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  346 |                                     required
+  347 |                                 />
+> 348 |                                 <InputField
+      |                                  ^^^^^^^^^^ This component is created during render
+  349 |                                     label="Email Address"
+  350 |                                     name="email"
+  351 |                                     type="email"
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                                                                                                        react-hooks/static-components
+  357:34  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  355 |                                     required
+  356 |                                 />
+> 357 |                                 <InputField
+      |                                  ^^^^^^^^^^ This component is created during render
+  358 |                                     label="Phone Number"
+  359 |                                     name="phone"
+  360 |                                     type="tel"
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                                                                                                           react-hooks/static-components
+  366:34  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  364 |                                     required
+  365 |                                 />
+> 366 |                                 <InputField
+      |                                  ^^^^^^^^^^ This component is created during render
+  367 |                                     label="Company Name (Optional)"
+  368 |                                     name="companyName"
+  369 |                                     value={formData.companyName}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                                                                        react-hooks/static-components
+  382:34  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  380 |                             </h2>
+  381 |                             <div className="grid grid-cols-1 gap-4">
+> 382 |                                 <InputField
+      |                                  ^^^^^^^^^^ This component is created during render
+  383 |                                     label="Street Address"
+  384 |                                     name="street"
+  385 |                                     value={formData.shippingAddress.street}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                                                    react-hooks/static-components
+  391:34  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  389 |                                     placeholder="123 Main St"
+  390 |                                 />
+> 391 |                                 <InputField
+      |                                  ^^^^^^^^^^ This component is created during render
+  392 |                                     label="Apartment, suite, etc. (optional)"
+  393 |                                     name="apartment"
+  394 |                                     value={formData.shippingAddress.apartment}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                                 react-hooks/static-components
+  398:38  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  396 |                                 />
+  397 |                                 <div className="grid grid-cols-2 gap-4">
+> 398 |                                     <InputField
+      |                                      ^^^^^^^^^^ This component is created during render
+  399 |                                         label="City"
+  400 |                                         name="city"
+  401 |                                         value={formData.shippingAddress.city}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                                         react-hooks/static-components
+  406:38  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  404 |                                         required
+  405 |                                     />
+> 406 |                                     <InputField
+      |                                      ^^^^^^^^^^ This component is created during render
+  407 |                                         label="State / Province"
+  408 |                                         name="state"
+  409 |                                         value={formData.shippingAddress.state}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                                               react-hooks/static-components
+  416:38  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  414 |                                 </div>
+  415 |                                 <div className="grid grid-cols-2 gap-4">
+> 416 |                                     <InputField
+      |                                      ^^^^^^^^^^ This component is created during render
+  417 |                                         label="ZIP / Postal Code"
+  418 |                                         name="zip"
+  419 |                                         value={formData.shippingAddress.zip}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                          react-hooks/static-components
+  463:38  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  461 |                             {!formData.billingSameAsShipping && (
+  462 |                                 <div className="grid grid-cols-1 gap-4 mt-4 animate-fadeIn">
+> 463 |                                     <InputField
+      |                                      ^^^^^^^^^^ This component is created during render
+  464 |                                         label="Street Address"
+  465 |                                         name="street"
+  466 |                                         value={formData.billingAddress.street}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                         react-hooks/static-components
+  473:42  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  471 |                                     {/* ... Repeat address fields or generic sub-component ... */}
+  472 |                                     <div className="grid grid-cols-2 gap-4">
+> 473 |                                         <InputField
+      |                                          ^^^^^^^^^^ This component is created during render
+  474 |                                             label="City"
+  475 |                                             name="city"
+  476 |                                             value={formData.billingAddress.city}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">  react-hooks/static-components
+  481:42  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  479 |                                             required
+  480 |                                         />
+> 481 |                                         <InputField
+      |                                          ^^^^^^^^^^ This component is created during render
+  482 |                                             label="State"
+  483 |                                             name="state"
+  484 |                                             value={formData.billingAddress.state}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                                               react-hooks/static-components
+  491:42  error    Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  489 |                                     </div>
+  490 |                                     <div className="grid grid-cols-2 gap-4">
+> 491 |                                         <InputField
+      |                                          ^^^^^^^^^^ This component is created during render
+  492 |                                             label="ZIP Code"
+  493 |                                             name="zip"
+  494 |                                             value={formData.billingAddress.zip}
+
+  285 |     }
+  286 |
+> 287 |     const InputField = ({ label, name, type = "text", value, onChange, error, placeholder, required = false }) => (
+      |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 288 |         <div className="mb-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 289 |             <label className="block text-sm font-medium text-gray-700 mb-1">
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 302 |         </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 303 |     );
+      | ^^^^^^ The component is created during render here
+  304 |
+  305 |     return (
+  306 |         <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">                                                        react-hooks/static-components
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/CustomPhotoFrame.jsx
+   2:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        no-unused-vars
+  24:40  error    'setDirectCheckoutItem' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                no-unused-vars
+  92:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  90 |         if (location.state?.editItem) {
+  91 |             const item = location.state.editItem;
+> 92 |             setEditItem(item);
+     |             ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  93 |             // Find the matching product category to open the form immediately
+  94 |             const matchingProduct = products.find(p => p.id === item.id);
+  95 |             if (matchingProduct) {  react-hooks/set-state-in-effect
+  99:8   warning  React Hook useEffect has a missing dependency: 'products'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/exhaustive-deps
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/GoogleSheetsTestPage.jsx
+  16:12  error  'error' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/PrivacyPolicy.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/ProductDetails.jsx
+  12:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 no-unused-vars
+  92:27  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  90 |         await new Promise(resolve => setTimeout(resolve, 800));
+  91 |
+> 92 |         const csrfToken = Math.random().toString(36).substring(7);
+     |                           ^^^^^^^^^^^^^ Cannot call impure function
+  93 |
+  94 |         // Create a temporary cart item
+  95 |         const tempItem = {  react-hooks/purity
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/pages/Terms.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/services/authService.js
+  114:52  error  'tokenResponse' is defined but never used  no-unused-vars
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/test/formSubmission.test.js
+   10:5   error  'mockAuthState' is defined but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+   11:5   error  'mockToastContext' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+   13:5   error  'wait' is defined but never used. Allowed unused vars must match /^[A-Z_]/u              no-unused-vars
+   19:1   error  'jest' is not defined                                                                    no-undef
+   22:23  error  'jest' is not defined                                                                    no-undef
+   26:33  error  'jest' is not defined                                                                    no-undef
+   30:19  error  'jest' is not defined                                                                    no-undef
+   35:1   error  'describe' is not defined                                                                no-undef
+   36:5   error  'beforeEach' is not defined                                                              no-undef
+   38:9   error  'jest' is not defined                                                                    no-undef
+   41:5   error  'afterEach' is not defined                                                               no-undef
+   49:5   error  'describe' is not defined                                                                no-undef
+   50:9   error  'test' is not defined                                                                    no-undef
+   52:35  error  'jest' is not defined                                                                    no-undef
+   53:33  error  'jest' is not defined                                                                    no-undef
+   56:30  error  'require' is not defined                                                                 no-undef
+   71:13  error  'expect' is not defined                                                                  no-undef
+   72:13  error  'expect' is not defined                                                                  no-undef
+   73:13  error  'expect' is not defined                                                                  no-undef
+   74:13  error  'expect' is not defined                                                                  no-undef
+   75:13  error  'expect' is not defined                                                                  no-undef
+   76:13  error  'expect' is not defined                                                                  no-undef
+   79:9   error  'test' is not defined                                                                    no-undef
+   82:30  error  'require' is not defined                                                                 no-undef
+   90:13  error  'expect' is not defined                                                                  no-undef
+   93:9   error  'test' is not defined                                                                    no-undef
+   96:30  error  'require' is not defined                                                                 no-undef
+  108:13  error  'expect' is not defined                                                                  no-undef
+  115:5   error  'describe' is not defined                                                                no-undef
+  116:9   error  'test' is not defined                                                                    no-undef
+  121:13  error  'expect' is not defined                                                                  no-undef
+  122:13  error  'expect' is not defined                                                                  no-undef
+  123:13  error  'expect' is not defined                                                                  no-undef
+  126:9   error  'test' is not defined                                                                    no-undef
+  131:13  error  'expect' is not defined                                                                  no-undef
+  132:13  error  'expect' is not defined                                                                  no-undef
+  135:9   error  'test' is not defined                                                                    no-undef
+  140:13  error  'expect' is not defined                                                                  no-undef
+  141:13  error  'expect' is not defined                                                                  no-undef
+  144:9   error  'test' is not defined                                                                    no-undef
+  153:13  error  'expect' is not defined                                                                  no-undef
+  154:13  error  'expect' is not defined                                                                  no-undef
+  157:9   error  'test' is not defined                                                                    no-undef
+  162:13  error  'expect' is not defined                                                                  no-undef
+  163:13  error  'expect' is not defined                                                                  no-undef
+  170:5   error  'describe' is not defined                                                                no-undef
+  171:9   error  'test' is not defined                                                                    no-undef
+  174:13  error  'expect' is not defined                                                                  no-undef
+  177:9   error  'test' is not defined                                                                    no-undef
+  183:13  error  'expect' is not defined                                                                  no-undef
+  186:9   error  'test' is not defined                                                                    no-undef
+  192:13  error  'expect' is not defined                                                                  no-undef
+  193:13  error  'expect' is not defined                                                                  no-undef
+  194:13  error  'expect' is not defined                                                                  no-undef
+  197:9   error  'test' is not defined                                                                    no-undef
+  200:30  error  'require' is not defined                                                                 no-undef
+  207:13  error  'expect' is not defined                                                                  no-undef
+  208:13  error  'expect' is not defined                                                                  no-undef
+  215:5   error  'describe' is not defined                                                                no-undef
+  216:9   error  'test' is not defined                                                                    no-undef
+  219:30  error  'require' is not defined                                                                 no-undef
+  228:13  error  'expect' is not defined                                                                  no-undef
+  231:9   error  'test' is not defined                                                                    no-undef
+  235:13  error  'expect' is not defined                                                                  no-undef
+  238:9   error  'test' is not defined                                                                    no-undef
+  242:13  error  'expect' is not defined                                                                  no-undef
+  243:13  error  'expect' is not defined                                                                  no-undef
+  244:13  error  'expect' is not defined                                                                  no-undef
+  251:5   error  'describe' is not defined                                                                no-undef
+  252:9   error  'test' is not defined                                                                    no-undef
+  255:30  error  'require' is not defined                                                                 no-undef
+  262:13  error  'expect' is not defined                                                                  no-undef
+  263:13  error  'expect' is not defined                                                                  no-undef
+  266:9   error  'test' is not defined                                                                    no-undef
+  270:13  error  'expect' is not defined                                                                  no-undef
+  273:9   error  'test' is not defined                                                                    no-undef
+  277:13  error  'expect' is not defined                                                                  no-undef
+  278:13  error  'expect' is not defined                                                                  no-undef
+  279:13  error  'expect' is not defined                                                                  no-undef
+  286:5   error  'describe' is not defined                                                                no-undef
+  287:9   error  'test' is not defined                                                                    no-undef
+  290:30  error  'require' is not defined                                                                 no-undef
+  297:13  error  'expect' is not defined                                                                  no-undef
+  298:13  error  'expect' is not defined                                                                  no-undef
+  298:46  error  Unexpected constant truthiness on the left-hand side of a `||` expression                no-constant-binary-expression
+  298:46  error  Unexpected constant truthiness on the left-hand side of a `||` expression                no-constant-binary-expression
+  301:9   error  'test' is not defined                                                                    no-undef
+  305:13  error  'expect' is not defined                                                                  no-undef
+  308:9   error  'test' is not defined                                                                    no-undef
+  312:13  error  'expect' is not defined                                                                  no-undef
+  313:13  error  'expect' is not defined                                                                  no-undef
+  320:5   error  'describe' is not defined                                                                no-undef
+  321:9   error  'test' is not defined                                                                    no-undef
+  324:30  error  'require' is not defined                                                                 no-undef
+  331:13  error  'expect' is not defined                                                                  no-undef
+  332:13  error  'expect' is not defined                                                                  no-undef
+  332:46  error  Unexpected constant truthiness on the left-hand side of a `||` expression                no-constant-binary-expression
+  335:9   error  'test' is not defined                                                                    no-undef
+  339:13  error  'expect' is not defined                                                                  no-undef
+  342:9   error  'test' is not defined                                                                    no-undef
+  346:13  error  'expect' is not defined                                                                  no-undef
+  347:13  error  'expect' is not defined                                                                  no-undef
+  354:5   error  'describe' is not defined                                                                no-undef
+  355:9   error  'test' is not defined                                                                    no-undef
+  358:30  error  'require' is not defined                                                                 no-undef
+  365:13  error  'expect' is not defined                                                                  no-undef
+  368:9   error  'test' is not defined                                                                    no-undef
+  371:30  error  'require' is not defined                                                                 no-undef
+  377:13  error  'expect' is not defined                                                                  no-undef
+  380:9   error  'test' is not defined                                                                    no-undef
+  386:30  error  'require' is not defined                                                                 no-undef
+  398:13  error  'expect' is not defined                                                                  no-undef
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/test/utils/testHelpers.js
+   58:37  error  'orderId' is assigned a value but never used                                                  no-unused-vars
+  106:17  error  'jest' is not defined                                                                         no-undef
+  107:18  error  'jest' is not defined                                                                         no-undef
+  117:19  error  'jest' is not defined                                                                         no-undef
+  118:22  error  'jest' is not defined                                                                         no-undef
+  191:29  error  'jest' is not defined                                                                         no-undef
+  201:26  error  'jest' is not defined                                                                         no-undef
+  220:19  error  'jest' is not defined                                                                         no-undef
+  233:9   error  'authState' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+  234:9   error  'toastContext' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  248:5   error  'expect' is not defined                                                                       no-undef
+  249:5   error  'expect' is not defined                                                                       no-undef
+  257:5   error  'expect' is not defined                                                                       no-undef
+  258:5   error  'expect' is not defined                                                                       no-undef
+
+/Users/snehasiskoley/Desktop/Projects/PriyoPixcel/src/test/validation.test.js
+   11:5   error  'validateCity' is defined but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+   12:5   error  'validateState' is defined but never used. Allowed unused vars must match /^[A-Z_]/u    no-unused-vars
+   14:5   error  'validateCountry' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+   21:1   error  'describe' is not defined                                                               no-undef
+   22:5   error  'test' is not defined                                                                   no-undef
+   32:13  error  'expect' is not defined                                                                 no-undef
+   33:13  error  'expect' is not defined                                                                 no-undef
+   37:5   error  'test' is not defined                                                                   no-undef
+   49:13  error  'expect' is not defined                                                                 no-undef
+   50:13  error  'expect' is not defined                                                                 no-undef
+   54:5   error  'test' is not defined                                                                   no-undef
+   56:9   error  'expect' is not defined                                                                 no-undef
+   57:9   error  'expect' is not defined                                                                 no-undef
+   60:5   error  'test' is not defined                                                                   no-undef
+   63:9   error  'expect' is not defined                                                                 no-undef
+   64:9   error  'expect' is not defined                                                                 no-undef
+   68:1   error  'describe' is not defined                                                               no-undef
+   69:5   error  'test' is not defined                                                                   no-undef
+   79:13  error  'expect' is not defined                                                                 no-undef
+   80:13  error  'expect' is not defined                                                                 no-undef
+   84:5   error  'test' is not defined                                                                   no-undef
+   86:9   error  'expect' is not defined                                                                 no-undef
+   87:9   error  'expect' is not defined                                                                 no-undef
+   90:5   error  'test' is not defined                                                                   no-undef
+   94:9   error  'expect' is not defined                                                                 no-undef
+   95:9   error  'expect' is not defined                                                                 no-undef
+   98:5   error  'test' is not defined                                                                   no-undef
+  100:9   error  'expect' is not defined                                                                 no-undef
+  104:1   error  'describe' is not defined                                                               no-undef
+  105:5   error  'test' is not defined                                                                   no-undef
+  115:13  error  'expect' is not defined                                                                 no-undef
+  116:13  error  'expect' is not defined                                                                 no-undef
+  120:5   error  'test' is not defined                                                                   no-undef
+  122:9   error  'expect' is not defined                                                                 no-undef
+  123:9   error  'expect' is not defined                                                                 no-undef
+  126:5   error  'test' is not defined                                                                   no-undef
+  128:9   error  'expect' is not defined                                                                 no-undef
+  131:5   error  'test' is not defined                                                                   no-undef
+  133:9   error  'expect' is not defined                                                                 no-undef
+  134:9   error  'expect' is not defined                                                                 no-undef
+  137:5   error  'test' is not defined                                                                   no-undef
+  139:9   error  'expect' is not defined                                                                 no-undef
+  143:1   error  'describe' is not defined                                                               no-undef
+  144:5   error  'test' is not defined                                                                   no-undef
+  153:13  error  'expect' is not defined                                                                 no-undef
+  154:13  error  'expect' is not defined                                                                 no-undef
+  158:5   error  'test' is not defined                                                                   no-undef
+  160:9   error  'expect' is not defined                                                                 no-undef
+  161:9   error  'expect' is not defined                                                                 no-undef
+  164:5   error  'test' is not defined                                                                   no-undef
+  166:9   error  'expect' is not defined                                                                 no-undef
+  170:1   error  'describe' is not defined                                                               no-undef
+  171:5   error  'test' is not defined                                                                   no-undef
+  175:9   error  'expect' is not defined                                                                 no-undef
+  176:9   error  'expect' is not defined                                                                 no-undef
+  179:5   error  'test' is not defined                                                                   no-undef
+  184:13  error  'expect' is not defined                                                                 no-undef
+  189:1   error  'describe' is not defined                                                               no-undef
+  190:5   error  'test' is not defined                                                                   no-undef
+  195:13  error  'expect' is not defined                                                                 no-undef
+  196:13  error  'expect' is not defined                                                                 no-undef
+  200:5   error  'test' is not defined                                                                   no-undef
+  202:9   error  'expect' is not defined                                                                 no-undef
+  203:9   error  'expect' is not defined                                                                 no-undef
+  206:5   error  'test' is not defined                                                                   no-undef
+  208:9   error  'expect' is not defined                                                                 no-undef
+  209:9   error  'expect' is not defined                                                                 no-undef
+  212:5   error  'test' is not defined                                                                   no-undef
+  214:9   error  'expect' is not defined                                                                 no-undef
+  215:9   error  'expect' is not defined                                                                 no-undef
+  219:1   error  'describe' is not defined                                                               no-undef
+  220:5   error  'test' is not defined                                                                   no-undef
+  222:9   error  'expect' is not defined                                                                 no-undef
+  223:9   error  'expect' is not defined                                                                 no-undef
+  226:5   error  'test' is not defined                                                                   no-undef
+  229:9   error  'expect' is not defined                                                                 no-undef
+  230:9   error  'expect' is not defined                                                                 no-undef
+  233:5   error  'test' is not defined                                                                   no-undef
+  235:9   error  'expect' is not defined                                                                 no-undef
+  238:5   error  'test' is not defined                                                                   no-undef
+  240:9   error  'expect' is not defined                                                                 no-undef
+  244:1   error  'describe' is not defined                                                               no-undef
+  245:5   error  'test' is not defined                                                                   no-undef
+  252:9   error  'expect' is not defined                                                                 no-undef
+  253:9   error  'expect' is not defined                                                                 no-undef
+  256:5   error  'test' is not defined                                                                   no-undef
+  263:9   error  'expect' is not defined                                                                 no-undef
+  264:9   error  'expect' is not defined                                                                 no-undef
+  267:5   error  'test' is not defined                                                                   no-undef
+  274:9   error  'expect' is not defined                                                                 no-undef
+  275:9   error  'expect' is not defined                                                                 no-undef
+  279:1   error  'describe' is not defined                                                               no-undef
+  280:5   error  'test' is not defined                                                                   no-undef
+  283:9   error  'expect' is not defined                                                                 no-undef
+  284:9   error  'expect' is not defined                                                                 no-undef
+  287:5   error  'test' is not defined                                                                   no-undef
+  290:9   error  'expect' is not defined                                                                 no-undef
+  293:5   error  'test' is not defined                                                                   no-undef
+  294:9   error  'expect' is not defined                                                                 no-undef
+  295:9   error  'expect' is not defined                                                                 no-undef
+
+✖ 322 problems (318 errors, 4 warnings)
+

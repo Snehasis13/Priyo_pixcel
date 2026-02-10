@@ -235,19 +235,13 @@ const ProductCustomizationForm = ({ selectedProduct, onBack, onSubmit, initialVa
     };
 
     const handleSubmit = () => {
-        console.log("ProductCustomizationForm: handleSubmit called");
         const isValid = validateCurrentStep();
-        console.log("ProductCustomizationForm: Validation result:", isValid);
         if (isValid) {
-            console.log("ProductCustomizationForm: onsubmit prop present?", !!onSubmit);
             if (onSubmit) {
                 onSubmit(formData);
             } else {
-                console.log('Form Submitted:', { selectedProduct, formData });
                 setIsSubmitted(true);
             }
-        } else {
-            console.log("ProductCustomizationForm: Validation failed", errors);
         }
     };
 

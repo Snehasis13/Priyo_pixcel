@@ -12,6 +12,8 @@ import SocialShare from '../components/ProductDetails/SocialShare';
 import { motion, AnimatePresence } from 'framer-motion';
 import Reveal from '../components/Reveal/Reveal';
 
+const generateId = () => Math.random().toString(36).substring(7);
+
 const ProductDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -89,7 +91,7 @@ const ProductDetails = () => {
         // Simulate CSRF/Security check setup
         await new Promise(resolve => setTimeout(resolve, 800));
 
-        const csrfToken = Math.random().toString(36).substring(7);
+        const csrfToken = generateId();
 
         // Create a temporary cart item
         const tempItem = {
@@ -278,6 +280,18 @@ const ProductDetails = () => {
                                         >
                                             Add to Cart
                                         </button>
+
+                                        {/* Customization Button */}
+                                        {['T-Shirts', 'Mugs', 'Business Cards', 'LED Frames', 'Photo Frames'].includes(product.category) && (
+                                            <button
+                                                onClick={() => navigate(`/customize/${product.id}`)}
+                                                disabled={!product.inStock}
+                                                className="flex-1 bg-purple-100 border-2 border-purple-200 text-purple-700 font-bold h-12 rounded-xl hover:bg-purple-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                Customize
+                                            </button>
+                                        )}
+
                                         <button
                                             onClick={handleBuyNow}
                                             disabled={!product.inStock}

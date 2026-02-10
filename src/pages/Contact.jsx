@@ -23,7 +23,6 @@ const Contact = () => {
         setIsSubmitting(true);
         // Simulate API call
         setTimeout(() => {
-            console.log('Form submitted:', formData);
             alert('Thank you for contacting us! We will get back to you soon.');
             setFormData({ name: '', email: '', subject: '', message: '' });
             setIsSubmitting(false);
@@ -37,7 +36,6 @@ const Contact = () => {
             return;
         }
         // Simulate API call
-        console.log('Subscribed:', newsletterEmail);
         setSubscribeStatus('success');
         setNewsletterEmail('');
         setTimeout(() => setSubscribeStatus(''), 3000);

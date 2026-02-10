@@ -37,7 +37,7 @@ export const CartProvider = ({ children }) => {
     });
 
     // Security State
-    const [lastActivity, setLastActivity] = useState(Date.now());
+    const [lastActivity, setLastActivity] = useState(() => Date.now());
     const [showSessionWarning, setShowSessionWarning] = useState(false);
     const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 mins
     const WARNING_THRESHOLD = 5 * 60 * 1000; // 5 mins before timeout
@@ -60,16 +60,44 @@ export const CartProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
+        try {
+            // Optimization: Remove large preview images from local storage to save space.
+            // We keep the thumbnail but remove the full resolution image if it's too large.
+            // In a production app, these should be uploaded to a server immediately.
+            const serializedCart = JSON.stringify(cartItems, (key, value) => {
+                // If the value is a string and potentially a base64 image (very long)
+                if (typeof value === 'string' && value.length > 50000 && (value.startsWith('data:image') || key === 'preview')) {
+                    // For local storage, we can't save huge strings. 
+                    // We might need to rely on the fact that if it's in state, it's fine.
+                    // But if we reload, we lose it. 
+                    // Ideally, we warn the user or use IndexedDB. 
+                    // For now, let's truncate/remove and add a flag so we know it's missing.
+                    return undefined; // Remove from storage
+                }
+                return value;
+            });
+            localStorage.setItem('cartItems', serializedCart);
+        } catch (e) {
+            console.error("Failed to save cart to local storage (Quota Exceeded)", e);
+            addToast("Cart image too large to save locally. It might be lost on refresh.", { type: 'warning' });
+        }
+    }, [cartItems, addToast]);
 
     useEffect(() => {
-        localStorage.setItem('savedItems', JSON.stringify(savedItems));
-        localStorage.setItem('wishlistItems', JSON.stringify(savedItems)); // Keep new key sync
+        try {
+            localStorage.setItem('savedItems', JSON.stringify(savedItems));
+            localStorage.setItem('wishlistItems', JSON.stringify(savedItems));
+        } catch (e) {
+            console.error("Failed to save wishlist", e);
+        }
     }, [savedItems]);
 
     useEffect(() => {
-        localStorage.setItem('orders', JSON.stringify(orders));
+        try {
+            localStorage.setItem('orders', JSON.stringify(orders));
+        } catch (e) {
+            console.error("Failed to save orders", e);
+        }
     }, [orders]);
 
     // Session Management Effect
@@ -269,12 +297,41 @@ export const CartProvider = ({ children }) => {
         const errors = [];
 
         newCartItems.forEach((cartItem, index) => {
+            // CONDITIONAL VALIDATION: Custom vs Standard
+
+            if (cartItem.isCustom || (cartItem.customization && Object.keys(cartItem.customization).length > 0)) {
+                // CUSTOM PRODUCT VALIDATION
+                let isValidCustom = true;
+                let customError = null;
+                const cust = cartItem.customization || {};
+
+                // Structural Checks
+                if (Object.keys(cust).length === 0) {
+                    customError = "Missing customization details";
+                    isValidCustom = false;
+                }
+
+                if (!isValidCustom) {
+                    cartItem.isValid = false;
+                    cartItem.validationError = customError;
+                    hasError = true;
+                    errors.push(`${cartItem.name}: ${customError}`);
+                } else {
+                    cartItem.isValid = true;
+                    cartItem.validationError = null;
+                }
+
+                return; // Keep item
+            }
+
+            // STANDARD PRODUCT VALIDATION
             const serverItem = serverProducts.find(p => p.id === cartItem.id);
 
             if (!serverItem) {
-                // Item no longer exists
+                // Item no longer exists in catalog
                 errors.push(`${cartItem.name} is no longer available.`);
-                newCartItems.splice(index, 1);
+                cartItem.isValid = false;
+                cartItem.validationError = "Product discontinued";
                 hasError = true;
             } else {
                 // Check Price Change
@@ -287,7 +344,8 @@ export const CartProvider = ({ children }) => {
                 // Check Stock
                 if (!serverItem.inStock) {
                     errors.push(`${cartItem.name} is out of stock.`);
-                    newCartItems.splice(index, 1);
+                    cartItem.isValid = false;
+                    cartItem.validationError = "Out of Stock";
                     hasError = true;
                 }
             }

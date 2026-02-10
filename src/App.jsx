@@ -15,14 +15,17 @@ import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import AllProducts from './pages/AllProducts';
 import ProductDetails from './pages/ProductDetails';
+import ProductCustomizationPage from './pages/ProductCustomizationPage';
 import FloatingActions from './components/FloatingActions/FloatingActions';
 
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthPage from './components/Auth/AuthPage';
 import Dashboard from './components/Dashboard/Dashboard';
+import GoogleSheetsTestPage from './pages/GoogleSheetsTestPage';
+import ExampleOrderForm from './components/ExampleOrderForm';
+import SheetSetup from './pages/SheetSetup';
 
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { gapi } from 'gapi-script';
 import { initializeGapi } from './services/driveService';
 
@@ -75,43 +78,54 @@ function App() {
     }
 
     return (
-        <GoogleOAuthProvider clientId={clientId}>
-            <AuthProvider>
-                <ScrollToTop />
-                <FloatingActions />
-                <Layout>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/wishlist" element={<Wishlist />} />
-                        <Route path="/products" element={<AllProducts />} />
-                        <Route path="/product/:id" element={<ProductDetails />} />
-                        <Route path="/blog" element={<Blog />} />
-                        <Route path="/custom-frame" element={<CustomPhotoFrame />} />
-                        <Route path="/terms" element={<Terms />} />
-                        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <AuthProvider>
+            <ScrollToTop />
+            <FloatingActions />
+            <Layout>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/products" element={<AllProducts />} />
+                    <Route path="/product/:id" element={<ProductDetails />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/custom-frame" element={<CustomPhotoFrame />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/privacy" element={<PrivacyPolicy />} />
 
-                        {/* Auth Routes */}
-                        <Route path="/login" element={<AuthPage />} />
-                        <Route path="/signup" element={<AuthPage />} />
+                    {/* Auth Routes */}
+                    <Route path="/login" element={<AuthPage />} />
+                    <Route path="/signup" element={<AuthPage />} />
 
-                        {/* Protected Routes */}
-                        <Route
-                            path="/dashboard"
-                            element={
-                                <ProtectedRoute>
-                                    <Dashboard />
-                                </ProtectedRoute>
-                            }
-                        />
-                    </Routes>
-                </Layout>
-            </AuthProvider>
-        </GoogleOAuthProvider>
+                    {/* Protected Routes */}
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    {/* Test Page for Google Sheets Integration */}
+                    <Route path="/test-sheets" element={<GoogleSheetsTestPage />} />
+
+                    {/* Example Order Form */}
+                    <Route path="/example-order" element={<ExampleOrderForm />} />
+
+                    {/* Product Customization Page */}
+                    <Route path="/customize/:productId" element={<ProductCustomizationPage />} />
+
+                    {/* Sheet Setup Page */}
+                    <Route path="/setup-sheet" element={<SheetSetup />} />
+                </Routes>
+            </Layout>
+        </AuthProvider>
     );
 }
+
 
 export default App;

@@ -15,88 +15,80 @@ import {
     ShoppingBag
 } from 'lucide-react';
 import { products as allProducts } from '../data/products';
-import ProductCustomizationForm from '../components/CustomFrame/ProductCustomizationForm';
+import ProductOnlyCustomizationForm from '../components/CustomFrame/ProductOnlyCustomizationForm';
 import Reveal from '../components/Reveal/Reveal';
+
+const products = [
+    {
+        id: 'tshirts',
+        name: 'Custom Printed T-shirts',
+        description: 'Premium cotton customized with your unique designs and photos.',
+        icon: Shirt,
+        color: 'from-pink-500 to-rose-500',
+        bgGlow: 'bg-pink-500/20'
+    },
+    {
+        id: 'frames',
+        name: 'Photo Frames',
+        description: 'LED wooden cutout, rotating, crystal, acrylic & more variants.',
+        icon: ImageIcon,
+        color: 'from-purple-500 to-indigo-500',
+        bgGlow: 'bg-purple-500/20'
+    },
+    {
+        id: 'mugs',
+        name: 'Coffee Mugs',
+        description: 'Magic mugs, travel mugs & ceramic personalization.',
+        icon: Coffee,
+        color: 'from-amber-700 to-orange-600',
+        bgGlow: 'bg-orange-500/20'
+    },
+    {
+        id: 'cards',
+        name: 'Business Cards',
+        description: 'Smart NFC cards and premium PVC ID cards.',
+        icon: CreditCard,
+        color: 'from-blue-600 to-cyan-500',
+        bgGlow: 'bg-blue-500/20'
+    },
+    {
+        id: 'fans',
+        name: '3D Hologram Fans',
+        description: 'Next-gen advertising with floating 3D visuals.',
+        icon: Fan,
+        color: 'from-emerald-500 to-teal-500',
+        bgGlow: 'bg-emerald-500/20'
+    },
+    {
+        id: 'keychains',
+        name: 'Keychains',
+        description: 'Acrylic, metal, and wooden custom shape keychains.',
+        icon: Key,
+        color: 'from-yellow-500 to-amber-500',
+        bgGlow: 'bg-yellow-500/20'
+    },
+    {
+        id: 'wall-hangings',
+        name: 'Wall Hangings',
+        description: 'Personalized wall decor with collage photos.',
+        icon: Images,
+        color: 'from-fuchsia-600 to-purple-600',
+        bgGlow: 'bg-fuchsia-500/20'
+    }
+];
 
 const CustomPhotoFrame = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { addToCart, updateCartItem, setDirectCheckoutItem } = useCart();
 
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [editItem, setEditItem] = useState(null);
-
-    const products = [
-        {
-            id: 'tshirts',
-            name: 'Custom Printed T-shirts',
-            description: 'Premium cotton customized with your unique designs and photos.',
-            icon: Shirt,
-            color: 'from-pink-500 to-rose-500',
-            bgGlow: 'bg-pink-500/20'
-        },
-        {
-            id: 'frames',
-            name: 'Photo Frames',
-            description: 'LED wooden cutout, rotating, crystal, acrylic & more variants.',
-            icon: ImageIcon,
-            color: 'from-purple-500 to-indigo-500',
-            bgGlow: 'bg-purple-500/20'
-        },
-        {
-            id: 'mugs',
-            name: 'Coffee Mugs',
-            description: 'Magic mugs, travel mugs & ceramic personalization.',
-            icon: Coffee,
-            color: 'from-amber-700 to-orange-600',
-            bgGlow: 'bg-orange-500/20'
-        },
-        {
-            id: 'cards',
-            name: 'Business Cards',
-            description: 'Smart NFC cards and premium PVC ID cards.',
-            icon: CreditCard,
-            color: 'from-blue-600 to-cyan-500',
-            bgGlow: 'bg-blue-500/20'
-        },
-        {
-            id: 'fans',
-            name: '3D Hologram Fans',
-            description: 'Next-gen advertising with floating 3D visuals.',
-            icon: Fan,
-            color: 'from-emerald-500 to-teal-500',
-            bgGlow: 'bg-emerald-500/20'
-        },
-        {
-            id: 'keychains',
-            name: 'Keychains',
-            description: 'Acrylic, metal, and wooden custom shape keychains.',
-            icon: Key,
-            color: 'from-yellow-500 to-amber-500',
-            bgGlow: 'bg-yellow-500/20'
-        },
-        {
-            id: 'wall-hangings',
-            name: 'Wall Hangings',
-            description: 'Personalized wall decor with collage photos.',
-            icon: Images,
-            color: 'from-fuchsia-600 to-purple-600',
-            bgGlow: 'bg-fuchsia-500/20'
-        }
-    ];
-
-    // Check for edit mode
-    useEffect(() => {
+    const [editItem, setEditItem] = useState(() => location.state?.editItem || null);
+    const [selectedProduct, setSelectedProduct] = useState(() => {
         if (location.state?.editItem) {
-            const item = location.state.editItem;
-            setEditItem(item);
-            // Find the matching product category to open the form immediately
-            const matchingProduct = products.find(p => p.id === item.id);
-            if (matchingProduct) {
-                setSelectedProduct(matchingProduct);
-            }
+            return products.find(p => p.id === location.state.editItem.id) || null;
         }
-    }, [location.state]);
+        return null;
+    });
 
     // Helper to match product from global catalog to customization category
     const matchProductToCategory = (product) => {
@@ -136,62 +128,30 @@ const CustomPhotoFrame = () => {
         const finalProduct = {
             ...selectedProduct,
             price: calculatePrice(selectedProduct, formData),
-            image: formData.uploads.preview || (selectedProduct?.icon ? null : null), // Use uploaded image or fallback logic
-            // Note: Icon is component, can't save to JSON potentially if not serializable
-
+            image: formData.uploads.preview || (selectedProduct?.icon ? null : null),
             customization: {
                 ...formData.productCustomization,
                 uploads: formData.uploads
             },
-            personalDetails: formData.personalDetails,
-            addressDetails: formData.addressDetails
+            isCustom: true
         };
 
         if (editItem) {
             // Update existing cart item
             updateCartItem(editItem.cartId, {
                 customization: finalProduct.customization,
-                personalDetails: finalProduct.personalDetails,
-                addressDetails: finalProduct.addressDetails,
                 image: finalProduct.image,
-                price: finalProduct.price
+                price: finalProduct.price,
+                quantity: formData.productCustomization.quantity
             });
             navigate('/cart');
         } else {
-            // DIRECT BUYOUT: Skip cart, go straight to checkout with formData
-            const checkoutItem = {
+            // Add to Cart Logic
+            addToCart({
                 ...finalProduct,
-                id: selectedProduct.id,
-                name: selectedProduct.name,
-                // price logic: finalProduct.price includes total for qty? 
-                // calculatePrice returns total base * qty.
-                // Checkout expects unit price usually, but let's see logic.
-                // If calculatePrice returns TOTAL, and we set quantity, total will be price * quantity.
-                // Let's ensure consistency.
-                // calculatePrice: "if (qty > 1) base *= qty". returns total.
-                // So unit price = finalProduct.price / qty. 
-                price: finalProduct.price / (formData.productCustomization.quantity || 1),
                 quantity: formData.productCustomization.quantity || 1
-            };
-
-            // Use context for heavy data (image) to avoid state size limits
-            setDirectCheckoutItem(checkoutItem);
-
-            // Generate CSRF token for checkout validation
-            const csrfToken = Math.random().toString(36).substring(7);
-
-            navigate('/checkout', {
-                state: {
-                    fromCustomFrame: true,
-                    // items: [checkoutItem], // REMOVED: Passed via context
-                    total: finalProduct.price, // Total amount can still be passed or derived
-                    csrfToken: csrfToken,
-                    formData: { // Pass pre-filled form data
-                        personalDetails: formData.personalDetails,
-                        addressDetails: formData.addressDetails
-                    }
-                }
             });
+            navigate('/cart');
         }
     };
 
@@ -365,7 +325,7 @@ const CustomPhotoFrame = () => {
                         </div>
 
                         <div className="max-w-4xl mx-auto">
-                            <ProductCustomizationForm
+                            <ProductOnlyCustomizationForm
                                 selectedProduct={selectedProduct}
                                 onBack={() => {
                                     setSelectedProduct(null);
@@ -375,8 +335,6 @@ const CustomPhotoFrame = () => {
                                 onSubmit={handleFormSubmit}
                                 initialValues={editItem ? {
                                     productCustomization: editItem.customization,
-                                    personalDetails: editItem.personalDetails,
-                                    addressDetails: editItem.addressDetails,
                                     uploads: editItem.customization?.uploads
                                 } : null}
                                 isEditing={!!editItem}
