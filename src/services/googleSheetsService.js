@@ -333,7 +333,7 @@ const sanitizeForSheet = (obj) => {
             return '[Image Too Large - Removed]';
         }
         return value;
-    });
+    }, 2); // Add indentation for readability
 };
 
 const formatOrderForSheet = (orderData) => {

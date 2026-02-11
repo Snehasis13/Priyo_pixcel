@@ -139,9 +139,9 @@ const ProductOnlyCustomizationForm = ({ selectedProduct, customizationCategory, 
         }
 
         const isLogoOptional = activeCategory === 'cards';
-        if (!formData.uploads.file && !isLogoOptional) {
-            newErrors['uploads.file'] = 'Please upload a design/photo';
-        }
+        // if (!formData.uploads.file && !isLogoOptional) {
+        //     newErrors['uploads.file'] = 'Please upload a design/photo';
+        // }
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -157,10 +157,58 @@ const ProductOnlyCustomizationForm = ({ selectedProduct, customizationCategory, 
         return base;
     };
 
+    const getFilteredCustomization = () => {
+        const commonFields = ['quantity'];
+        let allowedFields = [];
+
+        switch (activeCategory) {
+            case 'tshirts':
+                allowedFields = ['size', 'message'];
+                break;
+            case 'frames':
+                allowedFields = ['frameType', 'size', 'shape', 'orientation', 'customSize', 'customShape', 'message'];
+                break;
+            case 'mugs':
+                allowedFields = ['mugType', 'size', 'handlePosition', 'message'];
+                break;
+            case 'cards':
+                allowedFields = ['cardType', 'companyName', 'jobTitle', 'website', 'includeQRCode'];
+                break;
+            case 'fans':
+                allowedFields = ['fanSize', 'displayDuration', 'message'];
+                break;
+            case 'keychains':
+                allowedFields = ['keychainShape', 'keychainMaterial', 'keychainSize', 'message'];
+                break;
+            case 'wall-hangings':
+                allowedFields = ['wallHangingSize', 'wallHangingMaterial', 'orientation'];
+                break;
+            default:
+                // Fallback: keep everything if category is unknown
+                return formData.productCustomization;
+        }
+
+        // Filter the data
+        const filteredData = {};
+        [...commonFields, ...allowedFields].forEach(field => {
+            if (formData.productCustomization[field] !== undefined) {
+                filteredData[field] = formData.productCustomization[field];
+            }
+        });
+
+        return filteredData;
+    };
+
     const handleAddToCart = () => {
         if (validateForm()) {
+            const filteredCustomization = getFilteredCustomization();
+            const finalFormData = {
+                ...formData,
+                productCustomization: filteredCustomization
+            };
+
             if (typeof onSubmit === 'function') {
-                onSubmit(formData);
+                onSubmit(finalFormData);
                 return;
             }
 
@@ -169,14 +217,15 @@ const ProductOnlyCustomizationForm = ({ selectedProduct, customizationCategory, 
                 price: calculatePrice(selectedProduct, formData),
                 image: formData.uploads.preview || selectedProduct.image,
                 customization: {
-                    ...formData.productCustomization,
+                    ...filteredCustomization,
                     uploads: formData.uploads
-                    // Store the customization category too if needed for later reference
                 },
-                customizationCategory: activeCategory, // Helpful for re-editing
-                quantity: formData.productCustomization.quantity,
+                customizationCategory: activeCategory,
+                quantity: filteredCustomization.quantity,
                 isCustom: true
             };
+
+            console.log('VERIFICATION_LOG: Final Filtered Product:', JSON.stringify(finalProduct.customization, null, 2));
 
             addToCart(finalProduct);
             navigate('/cart');

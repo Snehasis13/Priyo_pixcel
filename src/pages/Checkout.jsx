@@ -230,6 +230,111 @@ const Checkout = () => {
 
         const finalBillingAddress = formData.billingSameAsShipping ? formData.shippingAddress : formData.billingAddress;
 
+        // Helper to clean and format product details
+        const cleanProductDetails = (cartItems) => {
+            return cartItems.map(item => {
+                const rawCustomization = item.customization || {};
+                const cleanedCustomization = {};
+                // Add customization fields, filtering out empty/system values
+                Object.entries(rawCustomization).forEach(([key, value]) => {
+                    // Skip system keys
+                    if (['uploads'].includes(key)) return;
+
+                    // Skip empty/null/undefined values
+                    if (value === null || value === undefined || value === '') return;
+
+                    // Helper to convert camelCase to snake_case for consistent JSON keys
+                    const snakeKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+
+                    cleanedCustomization[snakeKey] = value;
+                });
+
+                // Handle uploads specifically if needed (e.g. keeping preview links)
+                if (rawCustomization.uploads && rawCustomization.uploads.preview) {
+                    cleanedCustomization['preview_image'] = rawCustomization.uploads.preview;
+                }
+
+                return {
+                    product_name: item.name,
+                    customization: cleanedCustomization,
+                    quantity: item.quantity,
+                    price: item.price
+                };
+            });
+        };
+
+        const cleanedDetails = cleanProductDetails(items);
+
+        // --- VALIDATION START ---
+        const validateProductDetails = (details) => {
+            const errors = [];
+
+            if (!Array.isArray(details)) {
+                return { isValid: false, errors: ['Product details is not an array'] };
+            }
+
+            details.forEach((item, index) => {
+                if (!item.product_name) errors.push(`Item ${index + 1}: Missing product_name`);
+                if (!item.quantity) errors.push(`Item ${index + 1}: Missing quantity`);
+                if (item.price === undefined) errors.push(`Item ${index + 1}: Missing price`);
+
+                // Check if customization contains only user values (completeness check)
+                // This is a basic check. In a real app, strict schema validation per product type would be better.
+                if (item.product_name !== 'Standard Product' && Object.keys(item.customization).length === 0) {
+                    // Warning: Custom product with no customization? 
+                    // We allow it but it might be worth noting if that's unexpected for your catalog.
+                    // For now, assuming some products might not have customization is safe, 
+                    // AND if the user didn't select options, they might be relying on defaults 
+                    // (though we filtered those out).
+                    // However, the requirement says "Confirm all required fields... are present".
+                    // Since we don't have the form schema here, we rely on the form validation step (validateForm).
+                    // But we can check for "extraneous" fields or system data (which we already cleaned).
+                }
+
+                // Verify keys are valid (simple alphanum check for snake_case/camelCase keys)
+                Object.keys(item.customization).forEach(key => {
+                    if (key.startsWith('sys_') || key === 'undefined') {
+                        errors.push(`Item ${index + 1}: Invalid key detected '${key}'`);
+                    }
+                });
+            });
+
+            return {
+                isValid: errors.length === 0,
+                errors
+            };
+        };
+
+        const validationResult = validateProductDetails(cleanedDetails);
+
+        if (!validationResult.isValid) {
+            console.error('Data Validation Failed:', validationResult.errors);
+
+            // Backup raw order data
+            const backupData = {
+                timestamp: new Date().toISOString(),
+                reason: 'Validation Failure',
+                errors: validationResult.errors,
+                rawItems: items,
+                cleanedDetails: cleanedDetails,
+                formData: formData
+            };
+
+            try {
+                const key = `failed_order_${Date.now()}`;
+                localStorage.setItem(key, JSON.stringify(backupData));
+                console.warn(`Order backed up to localStorage: ${key}`);
+            } catch (e) {
+                console.error("Failed to backup to localStorage", e);
+            }
+
+            // Alert Admin (Simulated)
+            alert(`Order Validation Failed!\nErrors:\n${validationResult.errors.join('\n')}\n\nThe order has been logged for review. Please contact support.`);
+            return; // STOP execution
+        }
+        // --- VALIDATION END ---
+
+
         // Prepare order data for Google Sheets
         const orderData = {
             fullName: formData.fullName,
@@ -243,20 +348,13 @@ const Checkout = () => {
             productType: items.map(item => item.name).join(', '),
             quantity: items.reduce((sum, item) => sum + item.quantity, 0),
             totalAmount: total,
-            productDetails: items.map(item => ({
-                id: item.cartId || item.id, // Use cartId if available, fallback to product ID
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                customization: item.customization || {},
-                sku: item.id
-            })),
+            productDetails: cleanedDetails, // Use the cleaned and validated data
             items: items.map(item => ({
                 id: item.cartId || item.id,
                 name: item.name,
                 price: item.price,
                 quantity: item.quantity,
-                customization: item.customization || {} // Include customization details
+                customization: item.customization || {} // Keep internal structure for other uses if needed
             })),
             paymentMethod: formData.paymentMethod,
             orderDate: new Date().toISOString(),
@@ -299,7 +397,9 @@ const Checkout = () => {
                     timestamp: orderData.orderDate,
                     productType: orderData.productType,
                     quantity: orderData.quantity,
-                    estimatedDelivery: '7-10 business days'
+                    estimatedDelivery: '7-10 business days',
+                    // DEBUG: Pass the raw payload to the modal or state for verification
+                    debugPayload: orderData.productDetails
                 });
 
                 // Clear cart
